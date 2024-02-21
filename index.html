@@ -253,10 +253,11 @@
 
       <script type="module" src="/src/main.ts"></script>     
       <script>
-        function addBackButtonWidget() {
-          new BackButton().init();
+        function addSmartBanner() {
+          let banner = new SmartBanner();
+          banner.init();
         }
-        window.addEventListener('load', addBackButtonWidget);
+        window.addEventListener('load', addSmartBanner);
       </script>
 
 </body>
