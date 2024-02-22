@@ -1,7 +1,7 @@
-var w = Object.defineProperty;
-var x = (r, t, e) => t in r ? w(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var d = (r, t, e) => (x(r, typeof t != "symbol" ? t + "" : t, e), e);
-const b = typeof window < "u";
+var y = Object.defineProperty;
+var w = (r, t, e) => t in r ? y(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
+var d = (r, t, e) => (w(r, typeof t != "symbol" ? t + "" : t, e), e);
+const g = typeof window < "u";
 class B {
   constructor(t) {
     d(this, "button");
@@ -10,7 +10,7 @@ class B {
     d(this, "os", this.getMobileOS());
     d(this, "banner");
     d(this, "isCanvas", navigator.userAgent.includes("canvas"));
-    if (!b)
+    if (!g)
       return;
     this.os = this.getMobileOS();
     const e = this;
@@ -41,7 +41,7 @@ class B {
       // Link for iOS 
       linkAndroid: "https://play.google.com/",
       // Link for Android 
-      position: "bottom",
+      position: "top",
       // Position of the banner, default 'top'. 'top' | 'bottom'
       animation: "fadeIn",
       // Banner animation, default 'fadeIn'. 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
@@ -55,7 +55,7 @@ class B {
       // If true applies soft shadow, true | false
     }, t);
     const u = `
-      
+    
     .ml-smartBanner {
       display:none;
       position: fixed;
@@ -84,7 +84,9 @@ class B {
       gap: 15px
     }
     
-    .ml-smartBanner__title {font-weight: bold}
+    .ml-smartBanner__description {margin: 0}
+
+    .ml-smartBanner__title {font-weight: bold; margin: 0 0 5px 0}
   
     .ml-smartBanner__button {
       background-color: ${t.buttonColor};
@@ -92,7 +94,8 @@ class B {
       border-radius: 5px;
       color: ${t.buttonTextColor};
       font-size: 14px;
-      margin-left: auto
+      margin-left: auto;
+      text-decoration: none
     }
     
     .ml-smartBanner__closebutton {
@@ -190,7 +193,7 @@ class B {
       const f = document.createElement("h4");
       f.className = "ml-smartBanner__title", f.textContent = o.textHeading, a.appendChild(f);
       const h = document.createElement("p");
-      h.className = "ml-smartBanner__description", h.textContent = "Try it now, download today.", a.appendChild(h);
+      h.className = "ml-smartBanner__description", h.textContent = o.textDescription, a.appendChild(h);
       const m = document.createElement("a");
       m.id = "ml-smartBanner__button", m.className = "ml-smartBanner__button", m.target = "_blank", m.href = e.os === "android" ? o.linkAndroid : o.linkIos, m.textContent = o.buttonText;
       const p = document.createElement("span");
@@ -198,8 +201,8 @@ class B {
         i.style.display = "none";
       }), s.appendChild(n), s.appendChild(a), s.appendChild(m), s.appendChild(p), i.appendChild(s), document.body.appendChild(i), i;
     }
-    let y = l(t);
-    this.addStyle(u), this.display = t.display, this.delay = t.delay, this.os = this.getMobileOS(), this.banner = y;
+    let x = l(t);
+    this.addStyle(u), this.display = t.display, this.delay = t.delay, this.os = this.getMobileOS(), this.banner = x;
   }
   // (1) inserts css in page
   addStyle(t) {
@@ -207,9 +210,9 @@ class B {
     e.setAttribute("rel", "stylesheet"), e.setAttribute("type", "text/css"), e.setAttribute("href", "data:text/css;charset=UTF-8," + encodeURIComponent(t)), document.head.appendChild(e);
   }
   init() {
-    if (!b)
+    if (!g)
       return;
-    const t = this.display, e = this.banner, g = this.delay, u = () => {
+    const t = this.display, e = this.banner, b = this.delay, u = () => {
       let c = 0;
       switch (t) {
         case "onLoad":
@@ -234,7 +237,7 @@ class B {
     };
     setTimeout(() => {
       u();
-    }, g);
+    }, b);
   }
   getMobileOS() {
     var t = navigator.userAgent || navigator.vendor || window.opera;
@@ -246,7 +249,7 @@ class B {
       return "ios";
   }
 }
-b && function(r) {
+g && function(r) {
   r.SmartBanner = B;
 }(window);
 export {
