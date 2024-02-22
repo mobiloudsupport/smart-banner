@@ -13,7 +13,7 @@ Smart app banners are banners that show up when someone lands on your mobile web
 
 Here's an example:
 
-![smart-app-banner.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/24ca93c7-2026-4800-8bb3-1e13bfdada34/smart-app-banner.png)
+![smart-app-banner.png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F24ca93c7-2026-4800-8bb3-1e13bfdada34%2Fsmart-app-banner.png?table=block&id=26ab5175-3d37-46e7-9249-e50d334fde19&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1440&userId=&cache=v2)
 
 Here's what [Apple's own help pages](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html) say about smart app banners:
 
@@ -49,7 +49,7 @@ Smart Banner can be used importing the JS code via CDN or as a module using NPM
 ### 🚀 With CDN
 
 ```javascript
-<script src="https://cdn.jsdelivr.net/gh/mobiloudsupport/smart-banner/dist/ml-smart-banner.umd.cjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/ml-smart-banner/dist/ml-smart-banner.min.js"></script>
 <script>
   function addSmartBanner`() {
     new SmartBanner().init();
@@ -116,19 +116,19 @@ Once you have installed the extension, set it up as follows:
 
 Select “Chrome” as the browser and “Android” as the platform if you want to test the Android version of the banner, or “Safari” and “iOS” in case you want to test the iOS version:
 
-![annotely_image (61).png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3c66d89a-b74e-441a-a15f-197d08f78807/annotely_image_(61).png)
+![annotely_image (61).png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3c66d89a-b74e-441a-a15f-197d08f78807%2Fannotely_image_(61).png?table=block&id=7b5f225a-60e2-4001-bcdb-e4627b300be4&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1230&userId=&cache=v2)
 
 ### **Step 2**
 
 Select one of the options that will appear, any will work:
 
-![annotely_image (62).png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dec5d36c-69ec-40f5-aaf9-d4cc54e1e972/annotely_image_(62).png)
+![annotely_image (62).png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fdec5d36c-69ec-40f5-aaf9-d4cc54e1e972%2Fannotely_image_(62).png?table=block&id=dd116c73-51a6-449f-b34c-03358baadb92&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1230&userId=&cache=v2)
 
 ### **Step 3**
 
 Click “Apply” to make sure the user agent is properly set up on your browser:
 
-![annotely_image (63).png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cb126a7c-e078-4250-889c-83653ce496dd/annotely_image_(63).png)
+![annotely_image (63).png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fcb126a7c-e078-4250-889c-83653ce496dd%2Fannotely_image_(63).png?table=block&id=eae2261a-b36c-43b3-b151-2c02fc4ac39a&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1230&userId=&cache=v2)
 
 ### Step 4
 
@@ -138,4 +138,4 @@ You can now press “F5” while viewing your website to refresh the browser win
 
 If you want to revert the changes to the user agent, as some websites might start behaving differently after doing so, you can click the “Reset” button:
 
-![annotely_image (64).png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8af461b2-d9a7-43bf-9d0a-bec281b98347/annotely_image_(64).png)
+![annotely_image (64).png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8af461b2-d9a7-43bf-9d0a-bec281b98347%2Fannotely_image_(64).png?table=block&id=9e9c3806-30d7-495e-820c-bfca7d0e8331&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1230&userId=&cache=v2)
