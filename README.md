@@ -49,9 +49,9 @@ Smart Banner can be used importing the JS code via CDN or as a module using NPM
 ### 🚀 With CDN
 
 ```javascript
-<script src="https://cdn.jsdelivr.net/npm/ml-smart-banner/dist/ml-smart-banner.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/ml-smart-banner/dist/ml-smart-banner.min.js"></script>
 <script>
-  function addSmartBanner`() {
+  function addSmartBanner() {
     new SmartBanner().init();
   }
   window.addEventListener('load', addSmartBanner);
