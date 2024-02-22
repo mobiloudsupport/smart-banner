@@ -35,7 +35,7 @@ export default class SmartBanner {
       bannerColor: '#fff', // Banner BG color
       linkIos: 'https://itunes.apple.com/', // Link for iOS 
       linkAndroid: 'https://play.google.com/', // Link for Android 
-      position: 'bottom', // Position of the banner, default 'top'. 'top' | 'bottom'
+      position: 'top', // Position of the banner, default 'top'. 'top' | 'bottom'
       animation: 'fadeIn', // Banner animation, default 'fadeIn'. 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
       display: 'onLoad', // Display options, default 'onLoad'. 'onLoad' | 'onScrollDown' | 'onScrollUp'
       radius: '0', // Banner radius with units
@@ -46,7 +46,7 @@ export default class SmartBanner {
     options = Object.assign({}, defaultOptions, options);
     
     const css = `
-      
+    
     .ml-smartBanner {
       display:none;
       position: fixed;
@@ -75,7 +75,9 @@ export default class SmartBanner {
       gap: 15px
     }
     
-    .ml-smartBanner__title {font-weight: bold}
+    .ml-smartBanner__description {margin: 0}
+
+    .ml-smartBanner__title {font-weight: bold; margin: 0 0 5px 0}
   
     .ml-smartBanner__button {
       background-color: ${options.buttonColor};
@@ -83,7 +85,8 @@ export default class SmartBanner {
       border-radius: 5px;
       color: ${options.buttonTextColor};
       font-size: 14px;
-      margin-left: auto
+      margin-left: auto;
+      text-decoration: none
     }
     
     .ml-smartBanner__closebutton {
@@ -216,7 +219,7 @@ export default class SmartBanner {
       // Create and append p element
       const description = document.createElement('p');
       description.className = 'ml-smartBanner__description';
-      description.textContent = 'Try it now, download today.';
+      description.textContent = options.textDescription;
       content.appendChild(description);
     
       // Create the download button
