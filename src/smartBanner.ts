@@ -10,6 +10,7 @@ export default class SmartBanner {
   private display: SmartBannerOptions['display'] = 'onLoad';
   private delay!: SmartBannerOptions['delay'] ;  
   public os: Platform = this.getMobileOS();
+  public isMobile: RegExpMatchArray | null=  navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
   private banner!: HTMLDivElement ;
   public isCanvas = navigator.userAgent.includes("canvas");
   
@@ -19,6 +20,8 @@ export default class SmartBanner {
       return;
     }
     this.os = this.getMobileOS();
+    this.isMobile;
+    this.isCanvas;
     const self = this;
 
     const defaultOptions:SmartBannerOptions = {
@@ -275,7 +278,9 @@ export default class SmartBanner {
   }
 
   init() {
-    if (!IS_BROWSER) {
+    const isMobile = this.isMobile;
+    const isCanvas = this.isCanvas;
+    if (!IS_BROWSER || !isMobile || isCanvas) {
           return;
     }
     const display = this.display;
