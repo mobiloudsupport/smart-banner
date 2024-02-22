@@ -1,17 +1,38 @@
 {
-  "name": "ML-smart-banner",
+  "name": "ml-smart-banner",
+  "description": "Mobiloud Smart App Banner",
   "type": "module",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mobiloudsupport/smart-banner"
+  },
+  "keywords": [
+    "smartbanner",
+    "smart",
+    "banner",
+    "app",
+    "store",
+    "mobile",
+    "mobiloud",
+    "native",
+    "typescript",
+    "vanillajs",
+    "widget"
+  ],
+  "author": "Tomás González Morón",
+  "homepage": "https://github.com/mobiloudsupport/smart-banner",
   "files": [
     "dist"
   ],
-  "main": "./dist/my-lib.umd.cjs",
-  "module": "./dist/my-lib.js",
+  "main": "./dist/ml-smart-banner.umd.cjs",
+  "module": "./dist/ml-smart-banner.js",
   "exports": {
     ".": {
-      "import": "./dist/my-lib.js",
-      "require": "./dist/my-lib.umd.cjs"
+      "import": "./dist/ml-smart-banner.js",
+      "require": "./dist/ml-smart-banner.umd.cjs"
     }
   },
   "scripts": {
