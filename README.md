@@ -1,4 +1,4 @@
-# Mobiloud Smat App Banner
+# Mobiloud Smart App Banner
 
 Driving traffic to your app from your mobile site is the smartest way to gain new app users and retain mobile visitors. To get these people to down load your app, you can use smart app banners.
 
