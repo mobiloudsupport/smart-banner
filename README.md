@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/npm-1.0.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![License](https://img.shields.io/badge/License-purple?link=https%3A%2F%2Fgithub.com%2Fmobiloudsupport%2Fsmart-banner%2Fblob%2Fmain%2FLICENSE)](https://github.com/mobiloudsupport/smart-banner/blob/main/LICENSE)   [![Static Badge](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.1.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![License](https://img.shields.io/badge/License-purple?link=https%3A%2F%2Fgithub.com%2Fmobiloudsupport%2Fsmart-banner%2Fblob%2Fmain%2FLICENSE)](https://github.com/mobiloudsupport/smart-banner/blob/main/LICENSE)   [![Static Badge](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
 # Mobiloud Smat App Banner
