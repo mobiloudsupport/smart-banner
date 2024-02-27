@@ -25,6 +25,7 @@ type SmartBannerOptions = {
     radius?: string | null, // Any css unit, 50% gives a rounded btn if same height/width
     delay?: number, // defines how much time to wait until the element shows up
     shadow?: boolean, // If true applies soft shadow
+    useSession: boolean
   };
   
 type Platform = "windows" | "android" | "ios" | "unknown" | undefined;

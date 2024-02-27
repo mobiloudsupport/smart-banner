@@ -4,7 +4,6 @@ export const IS_BROWSER = typeof window !== 'undefined';
 
 
 export default class SmartBanner {
- 
   
   private button!: HTMLButtonElement;
   private display: SmartBannerOptions['display'] = 'onLoad';
@@ -13,15 +12,11 @@ export default class SmartBanner {
   public isMobile: RegExpMatchArray | null=  navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
   private banner!: HTMLDivElement ;
   public isCanvas = navigator.userAgent.includes("canvas");
-  
   constructor(options: SmartBannerOptions) {
  
     if (!IS_BROWSER) {
       return;
     }
-    this.os = this.getMobileOS();
-    this.isMobile;
-    this.isCanvas;
     const self = this;
 
     const defaultOptions:SmartBannerOptions = {
@@ -43,7 +38,8 @@ export default class SmartBanner {
       display: 'onLoad', // Display options, default 'onLoad'. 'onLoad' | 'onScrollDown' | 'onScrollUp'
       radius: '0', // Banner radius with units
       delay: 0, // defines how much time to wait until the element shows up
-      shadow: true // If true applies soft shadow, true | false
+      shadow: true, // If true applies soft shadow, true | false
+      useSession: false
     };
 
     options = Object.assign({}, defaultOptions, options);
@@ -241,7 +237,10 @@ export default class SmartBanner {
 
       closeButton.addEventListener('click', () => {
         appBanner.style.display = 'none'; // Hide the banner on click;
-          
+        if(options.useSession){
+          window.sessionStorage.setItem('bannerClosed', 'true');
+        }
+        
       });
       // Append elements to the wrapper
       wrapper.appendChild(icon);
@@ -280,8 +279,11 @@ export default class SmartBanner {
   init() {
     const isMobile = this.isMobile;
     const isCanvas = this.isCanvas;
-    if (!IS_BROWSER || !isMobile || isCanvas) {
-          return;
+    const bannerClosed =   window.sessionStorage.getItem('bannerClosed');
+
+    if (!IS_BROWSER || !isMobile || isCanvas || JSON.parse(bannerClosed!)) {
+      
+      return;
     }
     const display = this.display;
     const banner = this.banner;
