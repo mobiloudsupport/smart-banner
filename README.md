@@ -1,3 +1,7 @@
+
+[Version](https://img.shields.io/badge/version-1.1.0-blue?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner) [License](https://img.shields.io/badge/License-MIT-red?link=https%3A%2F%2Fgithub.com%2Fmobiloudsupport%2Fsmart-banner%2Fblob%2Fmain%2FLICENSE) [License](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)
+
+
 # Mobiloud Smat App Banner
 
 Driving traffic to your app from your mobile site is the smartest way to gain new app users and retain mobile visitors. To get these people to down load your app, you can use smart app banners.
@@ -139,3 +143,9 @@ You can now press “F5” while viewing your website to refresh the browser win
 If you want to revert the changes to the user agent, as some websites might start behaving differently after doing so, you can click the “Reset” button:
 
 ![annotely_image (64).png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8af461b2-d9a7-43bf-9d0a-bec281b98347%2Fannotely_image_(64).png?table=block&id=9e9c3806-30d7-495e-820c-bfca7d0e8331&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1230&userId=&cache=v2)
+
+## License
+
+MIT License
+
+Copyright (c) MobiLoud
