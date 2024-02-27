@@ -2,24 +2,24 @@
 ///<reference path="smartBanner.d.ts" />
 export const IS_BROWSER = typeof window !== 'undefined';
 
-
 export default class SmartBanner {
-  
+
   private button!: HTMLButtonElement;
   private display: SmartBannerOptions['display'] = 'onLoad';
-  private delay!: SmartBannerOptions['delay'] ;  
-  public os: Platform = this.getMobileOS();
-  public isMobile: RegExpMatchArray | null=  navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
-  private banner!: HTMLDivElement ;
+  private delay!: SmartBannerOptions['delay'];
+  private banner!: HTMLDivElement;
   public isCanvas = navigator.userAgent.includes("canvas");
+  public os: Platform = this.getMobileOS();
+  public isMobile: RegExpMatchArray | null = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
+
   constructor(options: SmartBannerOptions) {
- 
+
     if (!IS_BROWSER) {
       return;
     }
     const self = this;
 
-    const defaultOptions:SmartBannerOptions = {
+    const defaultOptions: SmartBannerOptions = {
       fontFamily: `"Source Sans Pro", "Arial", sans-serif`, // Font family for banner texts, defaults to system safe fonts
       fallbackFontFamily: 'sans-serif', // Font family for fallback icon, safe options are serif and sans-serif
       appName: 'ML', // Initials for fallback icon.  Reccommended 2 characters. Fallback Image uses button text and bg color
@@ -43,7 +43,7 @@ export default class SmartBanner {
     };
 
     options = Object.assign({}, defaultOptions, options);
-    
+
     const css = `
     
     .ml-smartBanner {
@@ -54,10 +54,10 @@ export default class SmartBanner {
       width: 100%;
       z-index: 99999;
       background-color: ${options.bannerColor};
-      box-shadow: ${options.shadow ? '0 0 4px 1px #00000014': 'none'} ;
+      box-shadow: ${options.shadow ? '0 0 4px 1px #00000014' : 'none'} ;
       transition: all 0.3ms ease-in-out;
       font-family: ${options.fontFamily};
-      animation: ${options.animation + ' ' + '0.5s both' };
+      animation: ${options.animation + ' ' + '0.5s both'};
       font-size: 14px;
       border-radius: ${options.radius}
     }
@@ -166,61 +166,61 @@ export default class SmartBanner {
       }
     `;
 
-    function generateAvatar(
+    function generateIcon(
       text: string,
       foregroundColor = "white",
       backgroundColor = "black"
     ) {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
-    
+
       canvas.width = 200;
       canvas.height = 200;
-    
+
       // Draw background
       context!.fillStyle = backgroundColor;
       context!.fillRect(0, 0, canvas.width, canvas.height);
-    
+
       // Draw text
       context!.font = `bold 100px ${options.fallbackFontFamily}`;
       context!.fillStyle = foregroundColor;
       context!.textAlign = "center";
       context!.textBaseline = "middle";
       context!.fillText(text, canvas.width / 2, canvas.height / 2);
-    
+
       return canvas.toDataURL("image/png");
     }
-    
+
     function createAppBanner(options: SmartBannerOptions): HTMLDivElement {
       // Create the main container div
       const appBanner = document.createElement('div');
       appBanner.className = 'ml-smartBanner';
-    
+
       // Create the wrapper div
       const wrapper = document.createElement('div');
       wrapper.className = 'ml-smartBanner__wrapper';
-    
+
       // Create the image element
       const icon = document.createElement('img');
       icon.className = 'ml-smartBanner__icon'
       icon.src = options.iconUrl;
-      icon.onerror = function(){ this.src=generateAvatar(options.appName, options.buttonTextColor , options.buttonColor)}
+      icon.onerror = function () { this.src = generateIcon(options.appName, options.buttonTextColor, options.buttonColor) }
       // Create the content div
       const content = document.createElement('div');
       content.className = 'ml-smartBanner__content';
-    
+
       // Create and append h4 element
       const heading = document.createElement('h4');
       heading.className = 'ml-smartBanner__title';
       heading.textContent = options.textHeading;
       content.appendChild(heading);
-    
+
       // Create and append p element
       const description = document.createElement('p');
       description.className = 'ml-smartBanner__description';
       description.textContent = options.textDescription;
       content.appendChild(description);
-    
+
       // Create the download button
       const downloadButton = document.createElement('a');
       downloadButton.id = 'ml-smartBanner__button';
@@ -228,7 +228,7 @@ export default class SmartBanner {
       downloadButton.target = '_blank';
       downloadButton.href = self.os === 'android' ? options.linkAndroid : options.linkIos;
       downloadButton.textContent = options.buttonText;
-    
+
       // Create the close button
       const closeButton = document.createElement('span');
       closeButton.id = 'ml-smartBanner__closebutton';
@@ -237,36 +237,35 @@ export default class SmartBanner {
 
       closeButton.addEventListener('click', () => {
         appBanner.style.display = 'none'; // Hide the banner on click;
-        if(options.useSession){
+        if (options.useSession) {
           window.sessionStorage.setItem('bannerClosed', 'true');
         }
-        
+
       });
       // Append elements to the wrapper
       wrapper.appendChild(icon);
       wrapper.appendChild(content);
       wrapper.appendChild(downloadButton);
       wrapper.appendChild(closeButton);
-    
+
       // Append the wrapper to the main container
       appBanner.appendChild(wrapper);
-    
+
       // Append the main container to the body of the document
       document.body.appendChild(appBanner);
 
       return appBanner
     }
-    
+
     let banner = createAppBanner(options)
     // with 'this' refers to the fn addStyle below (1)
     this.addStyle(css);
 
-    this.display = options.display;    
+    this.display = options.display;
     this.delay = options.delay;
-    this.os = this.getMobileOS();
     this.banner = banner
   }
- // (1) inserts css in page
+  // (1) inserts css in page
   addStyle(css: string) {
     const linkElement = document.createElement('link');
 
@@ -279,54 +278,53 @@ export default class SmartBanner {
   init() {
     const isMobile = this.isMobile;
     const isCanvas = this.isCanvas;
-    const bannerClosed =   window.sessionStorage.getItem('bannerClosed');
-
-    if (!IS_BROWSER || !isMobile || isCanvas || JSON.parse(bannerClosed!)) {
-      
-      return;
-    }
+    const bannerClosed = window.sessionStorage.getItem('bannerClosed');
     const display = this.display;
     const banner = this.banner;
     const delay = this.delay;
-    
-    const  displayMode = () => {
+
+    if (!IS_BROWSER || !isMobile || isCanvas || JSON.parse(bannerClosed!)) {
+      return;
+    }
+
+    const displayMode = () => {
       let lastScrollTop = 0;
       switch (display) {
         case 'onLoad':
-            banner.classList.add('ml-smartBanner-toggle--visible');          
+          banner.classList.add('ml-smartBanner-toggle--visible');
           break;
         case 'onScrollDown':
-          
-        window.addEventListener('scroll', function() {
-          let scrollTop = window.scrollY || document.documentElement.scrollTop;
-  
-          if (scrollTop < lastScrollTop) {
-            // Scrolling down, hide the element
-            banner.classList.remove('ml-smartBanner-toggle--visible');          
-          } else {
-            // Scrolling up, show the element
-            banner.classList.add('ml-smartBanner-toggle--visible');          
-          }
-  
-          lastScrollTop = scrollTop;
-        });
-          break;
-        case 'onScrollUp':
-          
-          window.addEventListener('scroll', function() {
+
+          window.addEventListener('scroll', function () {
             let scrollTop = window.scrollY || document.documentElement.scrollTop;
-    
-            if (scrollTop > lastScrollTop) {
+
+            if (scrollTop < lastScrollTop) {
               // Scrolling down, hide the element
-              banner.classList.remove('ml-smartBanner-toggle--visible');          
+              banner.classList.remove('ml-smartBanner-toggle--visible');
             } else {
               // Scrolling up, show the element
-              banner.classList.add('ml-smartBanner-toggle--visible');          
+              banner.classList.add('ml-smartBanner-toggle--visible');
             }
-    
+
             lastScrollTop = scrollTop;
           });
-          break; 
+          break;
+        case 'onScrollUp':
+
+          window.addEventListener('scroll', function () {
+            let scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop) {
+              // Scrolling down, hide the element
+              banner.classList.remove('ml-smartBanner-toggle--visible');
+            } else {
+              // Scrolling up, show the element
+              banner.classList.add('ml-smartBanner-toggle--visible');
+            }
+
+            lastScrollTop = scrollTop;
+          });
+          break;
         default:
           this.button.classList.add('ml-smartBanner-toggle--visible')
           break;
@@ -334,27 +332,27 @@ export default class SmartBanner {
     }
     setTimeout(() => {
       displayMode()
-    }, delay )
+    }, delay)
   }
 
   getMobileOS(): Platform {
-  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {
-        return "windows";
+      return "windows";
     }
 
     if (/android/i.test(userAgent)) {
-        return "android";
+      return "android";
     }
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return "ios";
+      return "ios";
     }
 
     return undefined;
-}
-  
+  }
+
 }
