@@ -39,7 +39,7 @@ export default class SmartBanner {
       radius: '0', // Banner radius with units
       delay: 0, // defines how much time to wait until the element shows up
       shadow: true, // If true applies soft shadow, true | false
-      useSession: false
+      useSession: true
     };
 
     options = Object.assign({}, defaultOptions, options);
@@ -237,6 +237,7 @@ export default class SmartBanner {
 
       closeButton.addEventListener('click', () => {
         appBanner.style.display = 'none'; // Hide the banner on click;
+        // If session param is true, banner is not sohwn again on refresh
         if (options.useSession) {
           window.sessionStorage.setItem('bannerClosed', 'true');
         }
@@ -282,7 +283,7 @@ export default class SmartBanner {
     const display = this.display;
     const banner = this.banner;
     const delay = this.delay;
-
+    
     if (!IS_BROWSER || !isMobile || isCanvas || JSON.parse(bannerClosed!)) {
       return;
     }
