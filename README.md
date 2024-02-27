@@ -1,5 +1,4 @@
-
-[Version](https://img.shields.io/badge/version-1.1.0-blue?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner) [License](https://img.shields.io/badge/License-MIT-red?link=https%3A%2F%2Fgithub.com%2Fmobiloudsupport%2Fsmart-banner%2Fblob%2Fmain%2FLICENSE) [License](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)
+![Version](https://img.shields.io/badge/npm-1.0.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)   ![License](https://img.shields.io/badge/License-purple?link=https%3A%2F%2Fgithub.com%2Fmobiloudsupport%2Fsmart-banner%2Fblob%2Fmain%2FLICENSE)   ![Static Badge](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)
 
 
 # Mobiloud Smat App Banner
@@ -65,25 +64,26 @@ Smart Banner can be used importing the JS code via CDN or as a module using NPM
 
 ```javascript
 const options = {
-    fontFamily: `"Source Sans Pro", "Arial", sans-serif`, // Font family for banner texts, defaults to system safe fonts
-    fallbackFontFamily: 'sans-serif', // Font family for fallback icon, safe options are serif and sans-serif
-    appName: 'ML', // Initials for fallback icon.  Reccommended 2 characters. Fallback Image uses button text and bg color
-    textColor: '#222', // Banner texts color (any color property value)
-    buttonColor: '#222', // Button color (any background property value)
-    buttonText: 'Download', // Button text
-    buttonTextColor: '#fff', // Button Text Color (any color property value)
-    iconUrl: '', // Icon url, defaults to avatar with appName
-    textHeading: 'Download now!', // Heading Text
-    textDescription: 'Try it now, download today', // Description text
-    bannerColor: '#fff', // Banner BG color
-    linkIos: 'https://itunes.apple.com/', // Link for iOS 
-    linkAndroid: 'https://play.google.com/', // Link for Android 
-    position: 'bottom', // Position of the banner, default 'top'. 'top' | 'bottom'
-    animation: 'fadeIn', // Banner animation, default 'fadeIn'. 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
-    display: 'onLoad', // Display options, default 'onLoad'. 'onLoad' | 'onScrollDown' | 'onScrollUp'
-    radius: '0', // Banner radius with units
-    delay: 0, // defines how much time to wait until the element shows up
-    shadow: true // If true applies soft shadow, true | false
+    fontFamily: `"Source Sans Pro", "Arial", sans-serif`, // (string) Font family for banner texts, defaults to system safe fonts
+    fallbackFontFamily: 'sans-serif', // (string) Font family for fallback icon, safe options are serif and sans-serif
+    appName: 'ML', // (string) Initials for fallback icon.  Reccommended 2 characters. Fallback Image uses button text and bg color
+    textColor: '#222', // (string) Banner texts color (any color property value)
+    buttonColor: '#222', // (string) Button color (any background property value)
+    buttonText: 'Download', // (string) Button text
+    buttonTextColor: '#fff', // (string) Button Text Color (any color property value)
+    iconUrl: '', // (string) Icon url, defaults to avatar with appName
+    textHeading: 'Download now!', // (string) Heading Text
+    textDescription: 'Try it now, download today', // (string) Description text
+    bannerColor: '#fff', // (string) Banner BG color
+    linkIos: 'https://itunes.apple.com/', // (string) Link for iOS 
+    linkAndroid: 'https://play.google.com/', // (string) Link for Android 
+    position: 'bottom', // (string) Position of the banner, default 'top'. 'top' | 'bottom'
+    animation: 'fadeIn', // (string) Banner animation, default 'fadeIn'. 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
+    display: 'onLoad', // (string) Display options, default 'onLoad'. 'onLoad' | 'onScrollDown' | 'onScrollUp'
+    radius: '0', // (string) Banner radius with units
+    delay: 0, // (number) defines how much time to wait until the element shows up
+    shadow: true, // (boolean) If true applies soft shadow, true | false
+    useSession: true // (boolean) If true, after closed, Banner is not shown upon page reaload. Default: true
 }
 
 const smartBanner = new SmartBanner(options);
