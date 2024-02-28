@@ -2,15 +2,15 @@ var x = Object.defineProperty;
 var y = (r, e, n) => e in r ? x(r, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : r[e] = n;
 var i = (r, e, n) => (y(r, typeof e != "symbol" ? e + "" : e, n), n);
 const h = typeof window < "u";
-class B {
+class C {
   constructor(e) {
     i(this, "button");
     i(this, "display", "onLoad");
     i(this, "delay");
     i(this, "banner");
-    i(this, "isCanvas", navigator.userAgent.includes("canvas"));
+    i(this, "isCanvas", navigator.userAgent.toLowerCase().includes("canvas"));
     i(this, "os", this.getMobileOS());
-    i(this, "isMobile", navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i));
+    i(this, "isMobile", navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i));
     if (!h)
       return;
     const n = this;
@@ -243,7 +243,7 @@ class B {
     }, u);
   }
   getMobileOS() {
-    var e = navigator.userAgent || navigator.vendor || window.opera;
+    var e = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
     if (/windows phone/i.test(e))
       return "windows";
     if (/android/i.test(e))
@@ -253,8 +253,8 @@ class B {
   }
 }
 h && function(r) {
-  r.SmartBanner = B;
+  r.SmartBanner = C;
 }(window);
 export {
-  B as default
+  C as default
 };
