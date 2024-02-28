@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1
+- Added z-index param in banner options
+
 ## 1.1.0
 - Added 'session' functionality
 - Minor fixes
