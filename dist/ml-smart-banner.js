@@ -53,7 +53,8 @@ class B {
       // defines how much time to wait until the element shows up
       shadow: !0,
       // If true applies soft shadow, true | false
-      useSession: !0
+      useSession: !0,
+      zindex: 999999
     }, e);
     const p = `
     
@@ -63,7 +64,7 @@ class B {
       ${e.position === "bottom" ? "bottom: 0" : "top: 0"};
       left: 0;
       width: 100%;
-      z-index: 99999;
+      z-index: ${e.zindex};
       background-color: ${e.bannerColor};
       box-shadow: ${e.shadow ? "0 0 4px 1px #00000014" : "none"} ;
       transition: all 0.3ms ease-in-out;
