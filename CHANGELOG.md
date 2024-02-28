@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.2
+- FIX: UserAgent parsed to lowercase for better matches on OS check
+
 ## 1.1.1
 - Added z-index param in banner options
 
