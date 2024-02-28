@@ -8,9 +8,9 @@ export default class SmartBanner {
   private display: SmartBannerOptions['display'] = 'onLoad';
   private delay!: SmartBannerOptions['delay'];
   private banner!: HTMLDivElement;
-  public isCanvas = navigator.userAgent.includes("canvas");
+  public isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
   public os: Platform = this.getMobileOS();
-  public isMobile: RegExpMatchArray | null = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
+  public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)
 
   constructor(options: SmartBannerOptions) {
 
@@ -338,7 +338,7 @@ export default class SmartBanner {
   }
 
   getMobileOS(): Platform {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    var userAgent = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
 
     // Windows Phone must come first because its UA also contains "Android"
     if (/windows phone/i.test(userAgent)) {
