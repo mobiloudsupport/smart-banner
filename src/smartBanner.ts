@@ -39,7 +39,8 @@ export default class SmartBanner {
       radius: '0', // Banner radius with units
       delay: 0, // defines how much time to wait until the element shows up
       shadow: true, // If true applies soft shadow, true | false
-      useSession: true
+      useSession: true,
+      zindex: 999999
     };
 
     options = Object.assign({}, defaultOptions, options);
@@ -52,7 +53,7 @@ export default class SmartBanner {
       ${options.position === 'bottom' ? 'bottom: 0' : 'top: 0'};
       left: 0;
       width: 100%;
-      z-index: 99999;
+      z-index: ${options.zindex};
       background-color: ${options.bannerColor};
       box-shadow: ${options.shadow ? '0 0 4px 1px #00000014' : 'none'} ;
       transition: all 0.3ms ease-in-out;
