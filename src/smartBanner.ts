@@ -2,14 +2,40 @@
 ///<reference path="smartBanner.d.ts" />
 export const IS_BROWSER = typeof window !== 'undefined';
 
-export default class SmartBanner {
+export function getMobileOS(): Platform {
+	var userAgent =
+	navigator.userAgent.toLowerCase() ||
+	navigator.vendor.toLowerCase() ||
+	window.opera;
+	
+	// Windows Phone must come first because its UA also contains "Android"
+	if (/windows phone/i.test(userAgent)) {
+		return "windows";
+	}
+	
+	if (/android/i.test(userAgent)) {
+		return "android";
+	}
+	
+	// iOS detection from: http://stackoverflow.com/a/9039885/177710
+	if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+		return "ios";
+	}
+	
+	return "desktop";
+}	
+
+export const os: Platform = getMobileOS();
+export const isMobile: boolean | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i) ? true : false;	
+export const isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
+export class SmartBanner {
 
   private button!: HTMLButtonElement;
   private display: SmartBannerOptions['display'] = 'onLoad';
   private delay!: SmartBannerOptions['delay'];
   private banner!: HTMLDivElement;
   public isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
-  public os: Platform = this.getMobileOS();
+  public os: Platform = getMobileOS();
   public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)
 
   constructor(options: SmartBannerOptions) {
@@ -337,24 +363,12 @@ export default class SmartBanner {
     }, delay)
   }
 
-  getMobileOS(): Platform {
-    var userAgent = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
-
-    // Windows Phone must come first because its UA also contains "Android"
-    if (/windows phone/i.test(userAgent)) {
-      return "windows";
-    }
-
-    if (/android/i.test(userAgent)) {
-      return "android";
-    }
-
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-      return "ios";
-    }
-
-    return undefined;
-  }
-
 }
+
+
+export const deviceData = {
+	os: os,
+	isMobile: isMobile ,
+	isCanvas: isCanvas
+}
+	

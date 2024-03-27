@@ -29,5 +29,5 @@ type SmartBannerOptions = {
     zindex: number
   };
   
-type Platform = "windows" | "android" | "ios" | "unknown" | undefined;
+type Platform = "windows" | "android" | "ios" | "unknown" | "desktop";
   

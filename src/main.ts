@@ -1,4 +1,4 @@
-import SmartBanner, { IS_BROWSER } from './smartBanner';
+import {SmartBanner, deviceData,  IS_BROWSER } from './smartBanner';
 export default SmartBanner;
 declare global {
   interface Window {
