@@ -1,16 +1,23 @@
-var x = Object.defineProperty;
-var y = (r, e, n) => e in r ? x(r, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : r[e] = n;
-var i = (r, e, n) => (y(r, typeof e != "symbol" ? e + "" : e, n), n);
+var y = Object.defineProperty;
+var C = (s, e, n) => e in s ? y(s, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : s[e] = n;
+var l = (s, e, n) => (C(s, typeof e != "symbol" ? e + "" : e, n), n);
 const h = typeof window < "u";
-class C {
+function x() {
+  var s = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
+  return /windows phone/i.test(s) ? "windows" : /android/i.test(s) ? "android" : /iPad|iPhone|iPod/.test(s) && !window.MSStream ? "ios" : "desktop";
+}
+x();
+navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i);
+navigator.userAgent.toLowerCase().includes("canvas");
+class B {
   constructor(e) {
-    i(this, "button");
-    i(this, "display", "onLoad");
-    i(this, "delay");
-    i(this, "banner");
-    i(this, "isCanvas", navigator.userAgent.toLowerCase().includes("canvas"));
-    i(this, "os", this.getMobileOS());
-    i(this, "isMobile", navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i));
+    l(this, "button");
+    l(this, "display", "onLoad");
+    l(this, "delay");
+    l(this, "banner");
+    l(this, "isCanvas", navigator.userAgent.toLowerCase().includes("canvas"));
+    l(this, "os", x());
+    l(this, "isMobile", navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i));
     if (!h)
       return;
     const n = this;
@@ -177,31 +184,31 @@ class C {
         .smartBanner-toggle {display: none !important}
       }
     `;
-    function d(t, a = "white", l = "black") {
-      const o = document.createElement("canvas"), s = o.getContext("2d");
-      return o.width = 200, o.height = 200, s.fillStyle = l, s.fillRect(0, 0, o.width, o.height), s.font = `bold 100px ${e.fallbackFontFamily}`, s.fillStyle = a, s.textAlign = "center", s.textBaseline = "middle", s.fillText(t, o.width / 2, o.height / 2), o.toDataURL("image/png");
+    function d(t, a = "white", i = "black") {
+      const o = document.createElement("canvas"), r = o.getContext("2d");
+      return o.width = 200, o.height = 200, r.fillStyle = i, r.fillRect(0, 0, o.width, o.height), r.font = `bold 100px ${e.fallbackFontFamily}`, r.fillStyle = a, r.textAlign = "center", r.textBaseline = "middle", r.fillText(t, o.width / 2, o.height / 2), o.toDataURL("image/png");
     }
     function u(t) {
       const a = document.createElement("div");
       a.className = "ml-smartBanner";
-      const l = document.createElement("div");
-      l.className = "ml-smartBanner__wrapper";
+      const i = document.createElement("div");
+      i.className = "ml-smartBanner__wrapper";
       const o = document.createElement("img");
       o.className = "ml-smartBanner__icon", o.src = t.iconUrl, o.onerror = function() {
         this.src = d(t.appName, t.buttonTextColor, t.buttonColor);
       };
-      const s = document.createElement("div");
-      s.className = "ml-smartBanner__content";
-      const b = document.createElement("h4");
-      b.className = "ml-smartBanner__title", b.textContent = t.textHeading, s.appendChild(b);
-      const g = document.createElement("p");
-      g.className = "ml-smartBanner__description", g.textContent = t.textDescription, s.appendChild(g);
+      const r = document.createElement("div");
+      r.className = "ml-smartBanner__content";
+      const g = document.createElement("h4");
+      g.className = "ml-smartBanner__title", g.textContent = t.textHeading, r.appendChild(g);
+      const b = document.createElement("p");
+      b.className = "ml-smartBanner__description", b.textContent = t.textDescription, r.appendChild(b);
       const c = document.createElement("a");
       c.id = "ml-smartBanner__button", c.className = "ml-smartBanner__button", c.target = "_blank", c.href = n.os === "android" ? t.linkAndroid : t.linkIos, c.textContent = t.buttonText;
       const m = document.createElement("span");
       return m.id = "ml-smartBanner__closebutton", m.className = "ml-smartBanner__closebutton", m.textContent = "×", m.addEventListener("click", () => {
         a.style.display = "none", t.useSession && window.sessionStorage.setItem("bannerClosed", "true");
-      }), l.appendChild(o), l.appendChild(s), l.appendChild(c), l.appendChild(m), a.appendChild(l), document.body.appendChild(a), a;
+      }), i.appendChild(o), i.appendChild(r), i.appendChild(c), i.appendChild(m), a.appendChild(i), document.body.appendChild(a), a;
     }
     let f = u(e);
     this.addStyle(p), this.display = e.display, this.delay = e.delay, this.banner = f;
@@ -242,19 +249,10 @@ class C {
       f();
     }, u);
   }
-  getMobileOS() {
-    var e = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
-    if (/windows phone/i.test(e))
-      return "windows";
-    if (/android/i.test(e))
-      return "android";
-    if (/iPad|iPhone|iPod/.test(e) && !window.MSStream)
-      return "ios";
-  }
 }
-h && function(r) {
-  r.SmartBanner = C;
+h && function(s) {
+  s.SmartBanner = B;
 }(window);
 export {
-  C as default
+  B as default
 };
