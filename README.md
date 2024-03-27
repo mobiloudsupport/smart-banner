@@ -1,7 +1,7 @@
-[![Version](https://img.shields.io/badge/npm-1.1.1-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![License](https://img.shields.io/badge/License-purple?link=https%3A%2F%2Fgithub.com%2Fmobiloudsupport%2Fsmart-banner%2Fblob%2Fmain%2FLICENSE)](https://github.com/mobiloudsupport/smart-banner/blob/main/LICENSE)   [![Static Badge](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.1.3-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
-# Mobiloud Smat App Banner
+# Mobiloud Smart App Banner
 
 Driving traffic to your app from your mobile site is the smartest way to gain new app users and retain mobile visitors. To get these people to down load your app, you can use smart app banners.
 
@@ -66,7 +66,7 @@ Smart Banner can be used importing the JS code via CDN or as a module using NPM
 const options = {
     fontFamily: `"Source Sans Pro", "Arial", sans-serif`, // (string) Font family for banner texts, defaults to system safe fonts
     fallbackFontFamily: 'sans-serif', // (string) Font family for fallback icon, safe options are serif and sans-serif
-    appName: 'ML', // (string) Initials for fallback icon.  Reccommended 2 characters. Fallback Image uses button text and bg color
+    appName: 'ML', // (string) Initials for fallback icon.  Recommended 2 characters. Fallback Image uses button text and bg color
     textColor: '#222', // (string) Banner texts color (any color property value)
     buttonColor: '#222', // (string) Button color (any background property value)
     buttonText: 'Download', // (string) Button text
@@ -93,13 +93,12 @@ const smartBanner = new SmartBanner(options);
 
 ## Methods
 
-### getMobileOS
-
-Returns current OS, useful for knowing the user OS and triggering functions depending on that
 ```javascript
-const smartBanner = new SmartBanner(options);
-smartBanner.getMobileOS()
+deviceData.os // returns current os "android" | "ios" | "windows" | "desktop"
+deviceData.isCanvas // returns true or false
+deviceData.isMobile // returns true or false
 ```
+
 
 ## Development
 

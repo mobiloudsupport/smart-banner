@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3
+- UPDATE: Added deviceData Method
+- Readme and license updated
+
 ## 1.1.2
 - FIX: UserAgent parsed to lowercase for better matches on OS check
 
