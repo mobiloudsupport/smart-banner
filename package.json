@@ -1,10 +1,13 @@
 {
   "name": "ml-smart-banner",
-  "description": "Mobiloud Smart App Banner",
+  "description": "MobiLoud Smart App Banner",
   "type": "module",
   "private": false,
-  "version": "1.1.3",
-  "license": "MobiLoud®",
+  "version": "1.1.4",
+  "license": "GPL-3.0-or-later",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mobiloudsupport/smart-banner"
@@ -48,5 +51,8 @@
   },
   "dependencies": {
     "rollup-plugin-terser": "^7.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/mobiloudsupport/qr-widget/issues"
   }
 }
