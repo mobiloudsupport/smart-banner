@@ -1,5 +1,5 @@
 {
-  "name": "ml-smart-banner",
+  "name": "@mobiloud/ml-smart-banner",
   "description": "MobiLoud Smart App Banner",
   "type": "module",
   "private": false,
