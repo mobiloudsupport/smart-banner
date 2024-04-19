@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 1.1.4
+- FIX: deviceData now working
+- Docs updated
+- License updated
+
 ## 1.1.3
 - UPDATE: Added deviceData Method
 - Readme and license updated

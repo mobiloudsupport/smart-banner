@@ -1,7 +1,7 @@
-[![Version](https://img.shields.io/badge/npm-1.1.3-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/Mobiloud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.1.4-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
-# Mobiloud Smart App Banner
+# MobiLoud Smart App Banner
 
 Driving traffic to your app from your mobile site is the smartest way to gain new app users and retain mobile visitors. To get these people to down load your app, you can use smart app banners.
 
@@ -12,7 +12,7 @@ Read on to learn more about smart banners, and how to implement a smart app bann
 
 ## **What Are Smart App Banners?**
 
-Smart app banners are banners that show up when someone lands on your mobile website, prompting them to get your app.
+'Smart App Banners' are banners that show up when someone lands on your mobile website, prompting them to get your app.
 
 Here's an example:
 
@@ -38,7 +38,7 @@ ML Smart Banner features:
     - Display options: On load or when user scrolls up/down
     - Android and iOS links
 -  Button Link applies automatically depending on user agent: If Android, it uses the provided android link if iOS, uses the provided ios link.
--  getMobileOs method available: its a function that can be called to get the current browser OS, useful for triggering external functions'. It returns a string containing "android" | "ios" | "windows"
+-  deviceData method available: its a function that can be called to get the current browser OS, useful for triggering external functions'. It returns a string containing "android" | "ios" | "windows"
 - Fallback App Icon option --> If the provided icon link is invalid / or image can not be displayed, an icon is generated using the App Name Param and Button colors
 - Default options set (if not texts, images or colors provided, it shows placeholder info, useful for catching errors or for testing while implementing the banner)
 - Banner can be used as a module or used directly in an html / script tag
@@ -83,7 +83,7 @@ const options = {
     radius: '0', // (string) Banner radius with units
     delay: 0, // (number) defines how much time to wait until the element shows up
     shadow: true, // (boolean) If true applies soft shadow, true | false
-    useSession: true, // (boolean) If true, after closed, Banner is not shown upon page reaload. Default: true
+    useSession: true, // (boolean) If true, after closed, Banner is not shown upon page reload. Default: true
     zindex: 999999 // (number) Sets the z-index of the element
 }
 
@@ -91,12 +91,55 @@ const smartBanner = new SmartBanner(options);
 
 ```
 
+
 ## Methods
 
 ```javascript
 deviceData.os // returns current os "android" | "ios" | "windows" | "desktop"
 deviceData.isCanvas // returns true or false
 deviceData.isMobile // returns true or false
+```
+
+## Recipes
+
+This are useful ways to implement the widget. We always recommend using an Event Listener to trigger the code when the document is loaded `window.addEventListener('load', fnName)`
+
+### Insert QR Banner on desktop only
+
+```javascript
+function addSmartBanner() {
+	if(deviceData.isMobile || deviceData.isCanvas ){
+		return
+	}
+    new SmartBanner(options).init();
+  }
+  window.addEventListener('load', addSmartBanner);
+```
+
+### Using deviceData method to filter devices
+
+```javascript
+const options = {
+  // Set params here
+}
+
+// Insert widgets only in our Canvas platform
+if(deviceData.isCanvas) {
+const smartBanner = new SmartBanner(options);
+}
+
+// Apply specific configs based on OS
+if(deviceData.os === "android" || deviceData.os === "windows") {
+  const smartBanner = new SmartBanner(options1);
+} 
+if(deviceData.os === "desktop" || deviceData.os === "ios") {
+  const smartBanner = new SmartBanner(options2);
+}
+
+// Insert widgets only in Mobile userAgent
+if(deviceData.isMobile) {
+const smartBanner = new SmartBanner(options3);
+}
 ```
 
 
@@ -145,7 +188,5 @@ If you want to revert the changes to the user agent, as some websites might star
 ![annotely_image (64).png](https://mobiloud.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8af461b2-d9a7-43bf-9d0a-bec281b98347%2Fannotely_image_(64).png?table=block&id=9e9c3806-30d7-495e-820c-bfca7d0e8331&spaceId=f1cb51a8-e748-4832-9335-2c96a2e81d09&width=1230&userId=&cache=v2)
 
 ## License
-
-MIT License
 
 Copyright (c) MobiLoud
