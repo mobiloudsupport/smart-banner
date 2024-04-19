@@ -18,7 +18,7 @@ export function getMobileOS(): Platform {
 	}
 	
 	// iOS detection from: http://stackoverflow.com/a/9039885/177710
-	if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+	if (/ipad|iphone|ipod/.test(userAgent) && !window.MSStream) {
 		return "ios";
 	}
 	
@@ -311,7 +311,7 @@ export class SmartBanner {
     const banner = this.banner;
     const delay = this.delay;
     
-    if (!IS_BROWSER || !isMobile || isCanvas || JSON.parse(bannerClosed!)) {
+    if (!IS_BROWSER || JSON.parse(bannerClosed!)) {
       return;
     }
 
