@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/npm-1.1.4-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.1.5-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
 # MobiLoud Smart App Banner
@@ -52,7 +52,7 @@ Smart Banner can be used importing the JS code via CDN or as a module using NPM
 ### 🚀 With CDN
 
 ```javascript
-<script type="module" src="https://cdn.jsdelivr.net/npm/ml-smart-banner/dist/ml-smart-banner.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@mobiloud/ml-smart-banner/dist/ml-smart-banner.min.js"></script>
 <script>
   function addSmartBanner() {
     new SmartBanner().init();
