@@ -1,7 +1,13 @@
 
 ///<reference path="smartBanner.d.ts" />
 export const IS_BROWSER = typeof window !== 'undefined';
-
+const eventBannerClosed = new CustomEvent("BANNER_CLOSED");
+const bannerEvents = {
+  BANNER_CLOSED: new CustomEvent("BANNER_CLOSED", {bubbles: true}),
+  BANNER_MOUNTED: new CustomEvent("BANNER_MOUNTED"),
+  BANNER_UNMOUNTED: new CustomEvent("BANNER_UNMOUNTED"),
+  BANNER_LINK_CLICKED: new CustomEvent("BANNER_LINK_CLICKED",  {bubbles: true})
+}
 export function getMobileOS(): Platform {
 	var userAgent =
 	navigator.userAgent.toLowerCase() ||
@@ -36,8 +42,9 @@ export class SmartBanner {
   private banner!: HTMLDivElement;
   public isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
   public os: Platform = getMobileOS();
-  public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)
-
+  public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i);
+  useSession!: boolean;
+  
   constructor(options: SmartBannerOptions) {
 
     if (!IS_BROWSER) {
@@ -50,6 +57,7 @@ export class SmartBanner {
       fallbackFontFamily: 'sans-serif', // Font family for fallback icon, safe options are serif and sans-serif
       appName: 'ML', // Initials for fallback icon.  Reccommended 2 characters. Fallback Image uses button text and bg color
       textColor: '#222', // Banner texts color (any color property value)
+      headingColor: '#222', // Heading color
       buttonColor: '#222', // Button color (any background property value)
       buttonText: 'Download', // Button text
       buttonTextColor: '#fff', // Button Text Color (any color property value)
@@ -86,7 +94,8 @@ export class SmartBanner {
       font-family: ${options.fontFamily};
       animation: ${options.animation + ' ' + '0.5s both'};
       font-size: 14px;
-      border-radius: ${options.radius}
+      border-radius: ${options.radius},
+      color: ${options.textColor}
     }
     .ml-smartBanner__icon {
       width: 40px;
@@ -101,9 +110,16 @@ export class SmartBanner {
       gap: 15px
     }
     
-    .ml-smartBanner__description {margin: 0}
+    .ml-smartBanner__description {
+      margin: 0;  
+      font-size: 14px
+    }
 
-    .ml-smartBanner__title {font-weight: bold; margin: 0 0 5px 0}
+    .ml-smartBanner__title {
+      font-weight: bold; margin: 0 0 5px 0;
+      color: ${options.headingColor};
+      font-size: 14px
+    }
   
     .ml-smartBanner__button {
       background-color: ${options.buttonColor};
@@ -261,10 +277,11 @@ export class SmartBanner {
       closeButton.id = 'ml-smartBanner__closebutton';
       closeButton.className = 'ml-smartBanner__closebutton';
       closeButton.textContent = '×';
-
+      downloadButton.onclick = function(){ downloadButton.dispatchEvent(bannerEvents.BANNER_LINK_CLICKED) };
       closeButton.addEventListener('click', () => {
-        appBanner.style.display = 'none'; // Hide the banner on click;
-        // If session param is true, banner is not sohwn again on refresh
+        closeButton.dispatchEvent(bannerEvents.BANNER_CLOSED);
+        self.unmount();     
+        // If session param is true, banner is not shown again on refresh
         if (options.useSession) {
           window.sessionStorage.setItem('bannerClosed', 'true');
         }
@@ -291,7 +308,8 @@ export class SmartBanner {
 
     this.display = options.display;
     this.delay = options.delay;
-    this.banner = banner
+    this.banner = banner;
+    this.useSession = options.useSession;
   }
   // (1) inserts css in page
   addStyle(css: string) {
@@ -300,21 +318,27 @@ export class SmartBanner {
     linkElement.setAttribute('rel', 'stylesheet');
     linkElement.setAttribute('type', 'text/css');
     linkElement.setAttribute('href', 'data:text/css;charset=UTF-8,' + encodeURIComponent(css));
-    document.head.appendChild(linkElement);
+    linkElement.setAttribute('ml-smart-banner-style', "");
+    document.head.append(linkElement);
   }
 
   init() {
-    const isMobile = this.isMobile;
-    const isCanvas = this.isCanvas;
+    
+    
     const bannerClosed = window.sessionStorage.getItem('bannerClosed');
     const display = this.display;
     const banner = this.banner;
     const delay = this.delay;
+    const useSession = this.useSession
+    this.unmount();
+    window.dispatchEvent(bannerEvents.BANNER_MOUNTED);
+    banner.setAttribute('initiated', "");
     
-    if (!IS_BROWSER || JSON.parse(bannerClosed!)) {
+    if (!IS_BROWSER || JSON.parse(bannerClosed!) && useSession) {
+      this.unmount();
       return;
     }
-
+    
     const displayMode = () => {
       let lastScrollTop = 0;
       switch (display) {
@@ -362,7 +386,16 @@ export class SmartBanner {
       displayMode()
     }, delay)
   }
+  unmount() {
+    let smartBanner = document.querySelector('.ml-smartBanner[initiated]');
+    let smartBannerStyles = document.querySelector('link[ml-smart-banner-style]')
 
+    if(smartBanner){
+      window.dispatchEvent(bannerEvents.BANNER_UNMOUNTED);
+      smartBanner?.remove()
+      smartBannerStyles?.remove()
+    }
+  }
 }
 
 

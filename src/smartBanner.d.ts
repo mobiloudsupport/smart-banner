@@ -9,6 +9,7 @@ type SmartBannerOptions = {
     appName: string,
     fontFamily: string,
     fallbackFontFamily: 'serif' | 'sans-serif',
+    headingColor?: string,
     textColor?: string,
     buttonColor?: string,
     buttonText: string,
