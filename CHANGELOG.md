@@ -1,6 +1,16 @@
 # Changelog
 
 
+## 1.2.0
+- FEATURE: Added `unmount()` method to remove library from DOM
+- FEATURE: Added `headingColor` param
+- FEATURE: When banner is closed, it unmounts from the page
+- FEATURE: Now library emits events on open, close and link clicked
+- CHANGE: Base styles changes 
+- CHANGE: Library modified to let page to have one instance of the banner only, on each `init()`, banner 
+- CHANGE: `useSession` param logic changed, now 
+- CHANGE: Styles injected in document now has a data attribute called 'ml-smart-banner-styles' <link rel="stylesheet" type="text/css" href="..." ml-smart-banner-style>
+
 ## 1.1.4 & 1.1.5
 - FIX: deviceData now working
 - Docs updated

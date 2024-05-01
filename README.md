@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/npm-1.1.5-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.2.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
 # MobiLoud Smart App Banner
@@ -68,6 +68,7 @@ const options = {
     fallbackFontFamily: 'sans-serif', // (string) Font family for fallback icon, safe options are serif and sans-serif
     appName: 'ML', // (string) Initials for fallback icon.  Recommended 2 characters. Fallback Image uses button text and bg color
     textColor: '#222', // (string) Banner texts color (any color property value)
+    headingColor: '#222', // (string) Banner heading texts color (any color property value)
     buttonColor: '#222', // (string) Button color (any background property value)
     buttonText: 'Download', // (string) Button text
     buttonTextColor: '#fff', // (string) Button Text Color (any color property value)
@@ -142,6 +143,35 @@ const smartBanner = new SmartBanner(options3);
 }
 ```
 
+## Events
+
+The library emits some useful events in the browser window, these can be used to trigger custom functions using event listeners.
+
+- `BANNER_CLOSED`: Triggered when close button is clicked, banner gets unmounted from page also.
+- `BANNER_MOUNTED`: Triggered when banner is mounted in page, on `init()` it gets unmounted as a cleanup and then mounted. 
+- `BANNER_UNMOUNTED`: Triggered when banner is mounted in unmounted, this is triggered on close or when firing `unmount()`,
+- `BANNER_LINK_CLICKED`: Triggered when banner link is clicked
+
+### Triggering events based on Smart Banner events
+
+```javascript
+window.addEventListener('BANNER_MOUNTED', () => {
+  console.log('banner opened');
+  // trigger something...
+});
+window.addEventListener('BANNER_CLOSED', () => {
+  console.log('banner closed');
+  // trigger something...
+});
+window.addEventListener('BANNER_UNMOUNTED', () => {
+  console.log('banner unmounted');
+  // trigger something...
+});
+window.addEventListener('BANNER_LINK_CLICKED', () => {
+  console.log('banner link clicked');
+  // trigger something...
+});
+```
 
 ## Development
 
