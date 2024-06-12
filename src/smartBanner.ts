@@ -255,13 +255,13 @@ export class SmartBanner {
       // Create and append h4 element
       const heading = document.createElement('h4');
       heading.className = 'ml-smartBanner__title';
-      heading.textContent = options.textHeading;
+      heading.innerHTML = options.textHeading;
       content.appendChild(heading);
 
       // Create and append p element
       const description = document.createElement('p');
       description.className = 'ml-smartBanner__description';
-      description.textContent = options.textDescription;
+      description.innerHTML = options.textDescription;
       content.appendChild(description);
 
       // Create the download button

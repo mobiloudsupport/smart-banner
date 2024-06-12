@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.2.1
+- FIX: html elements now inserts HTML intstead of plain text content, this allows to use html tags within texts
 
 ## 1.2.0
 - FEATURE: Added `unmount()` method to remove library from DOM
