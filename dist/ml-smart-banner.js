@@ -1,17 +1,17 @@
 var x = Object.defineProperty;
 var N = (a, e, t) => e in a ? x(a, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : a[e] = t;
 var r = (a, e, t) => (N(a, typeof e != "symbol" ? e + "" : e, t), t);
-const C = typeof window < "u", p = {
+const E = typeof window < "u", p = {
   BANNER_CLOSED: new CustomEvent("BANNER_CLOSED", { bubbles: !0 }),
   BANNER_MOUNTED: new CustomEvent("BANNER_MOUNTED"),
   BANNER_UNMOUNTED: new CustomEvent("BANNER_UNMOUNTED"),
   BANNER_LINK_CLICKED: new CustomEvent("BANNER_LINK_CLICKED", { bubbles: !0 })
 };
-function E() {
+function C() {
   var a = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
   return /windows phone/i.test(a) ? "windows" : /android/i.test(a) ? "android" : /ipad|iphone|ipod/.test(a) && !window.MSStream ? "ios" : "desktop";
 }
-const _ = E(), B = !!navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i), v = navigator.userAgent.toLowerCase().includes("canvas");
+const _ = C(), B = !!navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i), v = navigator.userAgent.toLowerCase().includes("canvas");
 class y {
   constructor(e) {
     r(this, "button");
@@ -19,10 +19,10 @@ class y {
     r(this, "delay");
     r(this, "banner");
     r(this, "isCanvas", navigator.userAgent.toLowerCase().includes("canvas"));
-    r(this, "os", E());
+    r(this, "os", C());
     r(this, "isMobile", navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i));
     r(this, "useSession");
-    if (!C)
+    if (!E)
       return;
     const t = this;
     e = Object.assign({}, {
@@ -214,9 +214,9 @@ class y {
       const s = document.createElement("div");
       s.className = "ml-smartBanner__content";
       const g = document.createElement("h4");
-      g.className = "ml-smartBanner__title", g.textContent = n.textHeading, s.appendChild(g);
+      g.className = "ml-smartBanner__title", g.innerHTML = n.textHeading, s.appendChild(g);
       const w = document.createElement("p");
-      w.className = "ml-smartBanner__description", w.textContent = n.textDescription, s.appendChild(w);
+      w.className = "ml-smartBanner__description", w.innerHTML = n.textDescription, s.appendChild(w);
       const l = document.createElement("a");
       l.id = "ml-smartBanner__button", l.className = "ml-smartBanner__button", l.target = "_blank", l.href = t.os === "android" ? n.linkAndroid : n.linkIos, l.textContent = n.buttonText;
       const u = document.createElement("span");
@@ -236,7 +236,7 @@ class y {
   }
   init() {
     const e = window.sessionStorage.getItem("bannerClosed"), t = this.display, d = this.banner, f = this.delay, b = this.useSession;
-    if (this.unmount(), window.dispatchEvent(p.BANNER_MOUNTED), d.setAttribute("initiated", ""), !C || JSON.parse(e) && b) {
+    if (this.unmount(), window.dispatchEvent(p.BANNER_MOUNTED), d.setAttribute("initiated", ""), !E || JSON.parse(e) && b) {
       this.unmount();
       return;
     }
@@ -272,15 +272,15 @@ class y {
     e && (window.dispatchEvent(p.BANNER_UNMOUNTED), e == null || e.remove(), t == null || t.remove());
   }
 }
-const S = {
+const L = {
   os: _,
   isMobile: B,
   isCanvas: v
 };
-C && function(a) {
-  a.SmartBanner = y, a.deviceData = S;
+E && function(a) {
+  a.SmartBanner = y, a.deviceData = L;
 }(window);
 export {
   y as SmartBanner,
-  S as deviceData
+  L as deviceData
 };
