@@ -94,7 +94,7 @@ export class SmartBanner {
       font-family: ${options.fontFamily};
       animation: ${options.animation + ' ' + '0.5s both'};
       font-size: 14px;
-      border-radius: ${options.radius},
+      border-radius: ${options.radius};
       color: ${options.textColor}
     }
     .ml-smartBanner__icon {
