@@ -27,7 +27,8 @@ type SmartBannerOptions = {
     delay?: number, // defines how much time to wait until the element shows up
     shadow?: boolean, // If true applies soft shadow
     useSession: boolean,
-    zindex: number
+    zindex: number,
+    sessionExpire: number
   };
   
 type Platform = "windows" | "android" | "ios" | "unknown" | "desktop";

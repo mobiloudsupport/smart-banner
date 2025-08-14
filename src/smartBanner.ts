@@ -74,7 +74,8 @@ export class SmartBanner {
       delay: 0, // defines how much time to wait until the element shows up
       shadow: true, // If true applies soft shadow, true | false
       useSession: true,
-      zindex: 999999
+      zindex: 999999,
+      sessionExpire: 1440
     };
 
     options = Object.assign({}, defaultOptions, options);
@@ -283,7 +284,9 @@ export class SmartBanner {
         self.unmount();     
         // If session param is true, banner is not shown again on refresh
         if (options.useSession) {
-          window.sessionStorage.setItem('bannerClosed', 'true');
+          const now = new Date().getTime(); 
+          const expireTime = new Date(now + (options.sessionExpire * 60 * 1000));
+          window.localStorage.setItem('widgetClosed', expireTime.toString());
         }
 
       });
@@ -325,7 +328,7 @@ export class SmartBanner {
   init() {
     
     
-    const bannerClosed = window.sessionStorage.getItem('bannerClosed');
+    const widgetClosed = window.localStorage.getItem('widgetClosed');
     const display = this.display;
     const banner = this.banner;
     const delay = this.delay;
@@ -333,8 +336,17 @@ export class SmartBanner {
     this.unmount();
     window.dispatchEvent(bannerEvents.BANNER_MOUNTED);
     banner.setAttribute('initiated', "");
-    
-    if (!IS_BROWSER || JSON.parse(bannerClosed!) && useSession) {
+    if (widgetClosed) {
+      console.log('smartBanner hidden by session');
+      const bannerExpired = new Date() > new Date(widgetClosed);
+
+      if (bannerExpired) {
+          localStorage.removeItem('widgetClosed'); // Ensure the old key is removed
+      } else {
+          return; // If not expired, exit early and don't show the widget
+      }
+    }
+    if (!IS_BROWSER) {
       this.unmount();
       return;
     }
