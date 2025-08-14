@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.0
+- useSession parameter updated: Now it creates a localstorage key with an expiration. Defaults to 1 day. Time is set with 'sessionExpire' param.
+
 ## 1.2.1
 - FIX: html elements now inserts HTML intstead of plain text content, this allows to use html tags within texts
 

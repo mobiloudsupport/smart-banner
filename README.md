@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/npm-1.2.1-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.3.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
 # MobiLoud Smart App Banner
