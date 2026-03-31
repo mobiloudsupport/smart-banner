@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/npm-1.3.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
+[![Version](https://img.shields.io/badge/npm-1.4.0-red?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mobiloud%2Fml-smart-banner)](https://www.npmjs.com/package/ml-smart-banner)   [![Static Badge](https://img.shields.io/badge/MobiLoud-%23047857?link=https%3A%2F%2Fwww.mobiloud.com%2F)](https://www.mobiloud.com/)
 
 
 # MobiLoud Smart App Banner
@@ -37,6 +37,7 @@ ML Smart Banner features:
     - Entering animation
     - Display options: On load or when user scrolls up/down
     - Android and iOS links
+- Native Apple Smart App Banner support on iOS Safari when the page already includes the required `apple-itunes-app` meta tag
 -  Button Link applies automatically depending on user agent: If Android, it uses the provided android link if iOS, uses the provided ios link.
 -  deviceData method available: its a function that can be called to get the current browser OS, useful for triggering external functions'. It returns a string containing "android" | "ios" | "windows"
 - Fallback App Icon option --> If the provided icon link is invalid / or image can not be displayed, an icon is generated using the App Name Param and Button colors
@@ -85,7 +86,10 @@ const options = {
     delay: 0, // (number) defines how much time to wait until the element shows up
     shadow: true, // (boolean) If true applies soft shadow, true | false
     useSession: true, // (boolean) If true, after closed, Banner is not shown upon page reload. Default: true
-    zindex: 999999 // (number) Sets the z-index of the element
+    zindex: 999999, // (number) Sets the z-index of the element
+    useAppleNativeBanner: false, // (boolean) If true, iOS Safari defers to Apple's native banner when the apple-itunes-app meta tag is present
+    appleAppId: '', // (string) Optional App Store ID reference for your own config/docs. The library does not inject the meta tag for you.
+    appleAppArgument: '' // (string) Optional deep-link URL matching Apple's app-argument value in the meta tag
 }
 
 const smartBanner = new SmartBanner(options);
@@ -99,6 +103,8 @@ const smartBanner = new SmartBanner(options);
 deviceData.os // returns current os "android" | "ios" | "windows" | "desktop"
 deviceData.isCanvas // returns true or false
 deviceData.isMobile // returns true or false
+deviceData.browser // returns "safari" | "chrome" | "firefox" | "other"
+deviceData.isIosSafari // returns true only for Safari on iPhone/iPad/iPod
 ```
 
 ## Recipes
@@ -116,6 +122,34 @@ function addSmartBanner() {
   }
   window.addEventListener('load', addSmartBanner);
 ```
+
+### Apple native banner on iOS Safari, custom banner elsewhere
+
+If your page already includes Apple's required meta tag in the server-rendered `<head>`, the library can automatically suppress the custom banner on iOS Safari while still showing the custom banner on Android and non-Safari iOS browsers.
+
+```html
+<meta name="apple-itunes-app" content="app-id=123456789, app-argument=https://example.com/open">
+```
+
+```javascript
+const options = {
+  useAppleNativeBanner: true,
+  appleAppId: '123456789',
+  appleAppArgument: 'https://example.com/open',
+  linkIos: 'https://apps.apple.com/app/id123456789',
+  linkAndroid: 'https://play.google.com/store/apps/details?id=com.example.app'
+}
+
+if (deviceData.isMobile && !deviceData.isCanvas) {
+  new SmartBanner(options).init();
+}
+```
+
+Behavior:
+- iOS Safari + meta tag present: native Apple banner handles the experience and the custom banner is suppressed
+- iOS Safari + meta tag missing: custom banner is shown as a fallback
+- Android: custom banner is shown as usual
+- iOS Chrome/Firefox/other: custom banner is shown as usual
 
 ### Using deviceData method to filter devices
 
@@ -151,6 +185,7 @@ The library emits some useful events in the browser window, these can be used to
 - `BANNER_MOUNTED`: Triggered when banner is mounted in page, on `init()` it gets unmounted as a cleanup and then mounted. 
 - `BANNER_UNMOUNTED`: Triggered when banner is mounted in unmounted, this is triggered on close or when firing `unmount()`,
 - `BANNER_LINK_CLICKED`: Triggered when banner link is clicked
+- `APPLE_NATIVE_BANNER_ACTIVE`: Triggered when iOS Safari detects an existing `apple-itunes-app` meta tag and defers to Apple's native banner
 
 ### Triggering events based on Smart Banner events
 
