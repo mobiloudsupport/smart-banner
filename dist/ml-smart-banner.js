@@ -1,30 +1,45 @@
-var _ = Object.defineProperty;
-var v = (n, e, t) => e in n ? _(n, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : n[e] = t;
-var r = (n, e, t) => (v(n, typeof e != "symbol" ? e + "" : e, t), t);
-const E = typeof window < "u", f = {
+var A = Object.defineProperty;
+var _ = (t, e, n) => e in t ? A(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
+var r = (t, e, n) => (_(t, typeof e != "symbol" ? e + "" : e, n), n);
+const E = typeof window < "u", u = {
   BANNER_CLOSED: new CustomEvent("BANNER_CLOSED", { bubbles: !0 }),
   BANNER_MOUNTED: new CustomEvent("BANNER_MOUNTED"),
   BANNER_UNMOUNTED: new CustomEvent("BANNER_UNMOUNTED"),
-  BANNER_LINK_CLICKED: new CustomEvent("BANNER_LINK_CLICKED", { bubbles: !0 })
+  BANNER_LINK_CLICKED: new CustomEvent("BANNER_LINK_CLICKED", { bubbles: !0 }),
+  APPLE_NATIVE_BANNER_ACTIVE: new CustomEvent("APPLE_NATIVE_BANNER_ACTIVE")
 };
-function x() {
-  var n = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
-  return /windows phone/i.test(n) ? "windows" : /android/i.test(n) ? "android" : /ipad|iphone|ipod/.test(n) && !window.MSStream ? "ios" : "desktop";
+function C() {
+  var t = navigator.userAgent.toLowerCase() || navigator.vendor.toLowerCase() || window.opera;
+  return /windows phone/i.test(t) ? "windows" : /android/i.test(t) ? "android" : /ipad|iphone|ipod/.test(t) && !window.MSStream ? "ios" : "desktop";
 }
-const y = x(), N = !!navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i), L = navigator.userAgent.toLowerCase().includes("canvas");
-class S {
+const S = C(), y = !!navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i), L = navigator.userAgent.toLowerCase().includes("canvas");
+function N() {
+  const t = navigator.userAgent;
+  return /CriOS|Chrome/i.test(t) && !/EdgiOS/i.test(t) ? "chrome" : /FxiOS|Firefox/i.test(t) ? "firefox" : /Safari/i.test(t) && !/CriOS|FxiOS|OPiOS|EdgiOS|DuckDuckGo|Brave|Chrome|Firefox/i.test(t) ? "safari" : "other";
+}
+function v() {
+  const t = navigator.userAgent, e = /iPhone|iPad|iPod/i.test(t), n = /Safari/i.test(t), l = !/CriOS|FxiOS|OPiOS|EdgiOS|DuckDuckGo|Brave|Chrome|Firefox/i.test(t);
+  return e && n && l;
+}
+const I = N(), k = v();
+class T {
   constructor(e) {
     r(this, "button");
     r(this, "display", "onLoad");
     r(this, "delay");
     r(this, "banner");
+    r(this, "options");
+    r(this, "useAppleNativeBanner", !1);
+    r(this, "appleAppId", "");
     r(this, "isCanvas", navigator.userAgent.toLowerCase().includes("canvas"));
-    r(this, "os", x());
+    r(this, "os", C());
     r(this, "isMobile", navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i));
+    r(this, "browser", N());
+    r(this, "isIosSafari", v());
     r(this, "useSession");
     if (!E)
       return;
-    const t = this;
+    const n = this;
     e = Object.assign({}, {
       fontFamily: '"Source Sans Pro", "Arial", sans-serif',
       // Font family for banner texts, defaults to system safe fonts
@@ -68,9 +83,12 @@ class S {
       // If true applies soft shadow, true | false
       useSession: !0,
       zindex: 999999,
-      sessionExpire: 1440
+      sessionExpire: 1440,
+      useAppleNativeBanner: !1,
+      appleAppId: "",
+      appleAppArgument: ""
     }, e);
-    const g = `
+    const f = `
     
     .ml-smartBanner {
       display:none;
@@ -199,72 +217,77 @@ class S {
         .smartBanner-toggle {display: none !important}
       }
     `;
-    function b(a, u = "white", i = "black") {
-      const o = document.createElement("canvas"), s = o.getContext("2d");
-      return o.width = 200, o.height = 200, s.fillStyle = i, s.fillRect(0, 0, o.width, o.height), s.font = `bold 100px ${e.fallbackFontFamily}`, s.fillStyle = u, s.textAlign = "center", s.textBaseline = "middle", s.fillText(a, o.width / 2, o.height / 2), o.toDataURL("image/png");
+    function g(o, d = "white", s = "black") {
+      const a = document.createElement("canvas"), i = a.getContext("2d");
+      return a.width = 200, a.height = 200, i.fillStyle = s, i.fillRect(0, 0, a.width, a.height), i.font = `bold 100px ${e.fallbackFontFamily}`, i.fillStyle = d, i.textAlign = "center", i.textBaseline = "middle", i.fillText(o, a.width / 2, a.height / 2), a.toDataURL("image/png");
     }
-    function c(a) {
-      const u = document.createElement("div");
-      u.className = "ml-smartBanner";
-      const i = document.createElement("div");
-      i.className = "ml-smartBanner__wrapper";
-      const o = document.createElement("img");
-      o.className = "ml-smartBanner__icon", o.src = a.iconUrl, o.onerror = function() {
-        this.src = b(a.appName, a.buttonTextColor, a.buttonColor);
-      };
+    function p(o) {
+      const d = document.createElement("div");
+      d.className = "ml-smartBanner";
       const s = document.createElement("div");
-      s.className = "ml-smartBanner__content";
-      const h = document.createElement("h4");
-      h.className = "ml-smartBanner__title", h.innerHTML = a.textHeading, s.appendChild(h);
+      s.className = "ml-smartBanner__wrapper";
+      const a = document.createElement("img");
+      a.className = "ml-smartBanner__icon", a.src = o.iconUrl, a.onerror = function() {
+        this.src = g(o.appName, o.buttonTextColor, o.buttonColor);
+      };
+      const i = document.createElement("div");
+      i.className = "ml-smartBanner__content";
+      const b = document.createElement("h4");
+      b.className = "ml-smartBanner__title", b.innerHTML = o.textHeading, i.appendChild(b);
       const w = document.createElement("p");
-      w.className = "ml-smartBanner__description", w.innerHTML = a.textDescription, s.appendChild(w);
-      const l = document.createElement("a");
-      l.id = "ml-smartBanner__button", l.className = "ml-smartBanner__button", l.target = "_blank", l.href = t.os === "android" ? a.linkAndroid : a.linkIos, l.textContent = a.buttonText;
-      const p = document.createElement("span");
-      return p.id = "ml-smartBanner__closebutton", p.className = "ml-smartBanner__closebutton", p.textContent = "×", l.onclick = function() {
-        l.dispatchEvent(f.BANNER_LINK_CLICKED);
-      }, p.addEventListener("click", () => {
-        if (p.dispatchEvent(f.BANNER_CLOSED), t.unmount(), a.useSession) {
-          const C = (/* @__PURE__ */ new Date()).getTime(), B = new Date(C + a.sessionExpire * 60 * 1e3);
+      w.className = "ml-smartBanner__description", w.innerHTML = o.textDescription, i.appendChild(w);
+      const c = document.createElement("a");
+      c.id = "ml-smartBanner__button", c.className = "ml-smartBanner__button", c.target = "_blank", c.href = n.os === "android" ? o.linkAndroid : o.linkIos, c.textContent = o.buttonText;
+      const m = document.createElement("span");
+      return m.id = "ml-smartBanner__closebutton", m.className = "ml-smartBanner__closebutton", m.textContent = "×", c.onclick = function() {
+        c.dispatchEvent(u.BANNER_LINK_CLICKED);
+      }, m.addEventListener("click", () => {
+        if (m.dispatchEvent(u.BANNER_CLOSED), n.unmount(), o.useSession) {
+          const x = (/* @__PURE__ */ new Date()).getTime(), B = new Date(x + o.sessionExpire * 60 * 1e3);
           window.localStorage.setItem("widgetClosed", B.toString());
         }
-      }), i.appendChild(o), i.appendChild(s), i.appendChild(l), i.appendChild(p), u.appendChild(i), document.body.appendChild(u), u;
+      }), s.appendChild(a), s.appendChild(i), s.appendChild(c), s.appendChild(m), d.appendChild(s), document.body.appendChild(d), d;
     }
-    let m = c(e);
-    this.addStyle(g), this.display = e.display, this.delay = e.delay, this.banner = m, this.useSession = e.useSession;
+    let h = p(e);
+    this.addStyle(f), this.display = e.display, this.delay = e.delay, this.banner = h, this.useSession = e.useSession, this.options = e, this.useAppleNativeBanner = e.useAppleNativeBanner ?? !1, this.appleAppId = e.appleAppId ?? "";
   }
   // (1) inserts css in page
   addStyle(e) {
-    const t = document.createElement("link");
-    t.setAttribute("rel", "stylesheet"), t.setAttribute("type", "text/css"), t.setAttribute("href", "data:text/css;charset=UTF-8," + encodeURIComponent(e)), t.setAttribute("ml-smart-banner-style", ""), document.head.append(t);
+    const n = document.createElement("link");
+    n.setAttribute("rel", "stylesheet"), n.setAttribute("type", "text/css"), n.setAttribute("href", "data:text/css;charset=UTF-8," + encodeURIComponent(e)), n.setAttribute("ml-smart-banner-style", ""), document.head.append(n);
   }
   init() {
-    const e = window.localStorage.getItem("widgetClosed"), t = this.display, d = this.banner, g = this.delay;
-    if (this.useSession, this.unmount(), window.dispatchEvent(f.BANNER_MOUNTED), d.setAttribute("initiated", ""), e)
+    var d;
+    const e = window.localStorage.getItem("widgetClosed"), n = this.display, l = this.banner, f = this.delay, g = this.options, p = !!document.querySelector('meta[name="apple-itunes-app"]'), h = this.isIosSafari && (p || g.useAppleNativeBanner === !0);
+    if (this.unmount(), !E) {
+      this.unmount();
+      return;
+    }
+    if (h && p) {
+      l.remove(), (d = document.querySelector("link[ml-smart-banner-style]")) == null || d.remove(), window.dispatchEvent(u.APPLE_NATIVE_BANNER_ACTIVE);
+      return;
+    }
+    if (window.dispatchEvent(u.BANNER_MOUNTED), l.setAttribute("initiated", ""), e)
       if (console.log("smartBanner hidden by session"), /* @__PURE__ */ new Date() > new Date(e))
         localStorage.removeItem("widgetClosed");
       else
         return;
-    if (!E) {
-      this.unmount();
-      return;
-    }
-    const b = () => {
-      let c = 0;
-      switch (t) {
+    const o = () => {
+      let s = 0;
+      switch (n) {
         case "onLoad":
-          d.classList.add("ml-smartBanner-toggle--visible");
+          l.classList.add("ml-smartBanner-toggle--visible");
           break;
         case "onScrollDown":
           window.addEventListener("scroll", function() {
-            let m = window.scrollY || document.documentElement.scrollTop;
-            m < c ? d.classList.remove("ml-smartBanner-toggle--visible") : d.classList.add("ml-smartBanner-toggle--visible"), c = m;
+            let a = window.scrollY || document.documentElement.scrollTop;
+            a < s ? l.classList.remove("ml-smartBanner-toggle--visible") : l.classList.add("ml-smartBanner-toggle--visible"), s = a;
           });
           break;
         case "onScrollUp":
           window.addEventListener("scroll", function() {
-            let m = window.scrollY || document.documentElement.scrollTop;
-            m > c ? d.classList.remove("ml-smartBanner-toggle--visible") : d.classList.add("ml-smartBanner-toggle--visible"), c = m;
+            let a = window.scrollY || document.documentElement.scrollTop;
+            a > s ? l.classList.remove("ml-smartBanner-toggle--visible") : l.classList.add("ml-smartBanner-toggle--visible"), s = a;
           });
           break;
         default:
@@ -273,23 +296,25 @@ class S {
       }
     };
     setTimeout(() => {
-      b();
-    }, g);
+      o();
+    }, f);
   }
   unmount() {
-    let e = document.querySelector(".ml-smartBanner[initiated]"), t = document.querySelector("link[ml-smart-banner-style]");
-    e && (window.dispatchEvent(f.BANNER_UNMOUNTED), e == null || e.remove(), t == null || t.remove());
+    let e = document.querySelector(".ml-smartBanner[initiated]"), n = document.querySelector("link[ml-smart-banner-style]");
+    e && (window.dispatchEvent(u.BANNER_UNMOUNTED), e == null || e.remove(), n == null || n.remove());
   }
 }
-const A = {
-  os: y,
-  isMobile: N,
-  isCanvas: L
+const D = {
+  os: S,
+  isMobile: y,
+  isCanvas: L,
+  browser: I,
+  isIosSafari: k
 };
-E && function(n) {
-  n.SmartBanner = S, n.deviceData = A;
+E && function(t) {
+  t.SmartBanner = T, t.deviceData = D;
 }(window);
 export {
-  S as SmartBanner,
-  A as deviceData
+  T as SmartBanner,
+  D as deviceData
 };
