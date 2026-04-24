@@ -74,8 +74,6 @@ export class SmartBanner {
   private delay!: SmartBannerOptions['delay'];
   private banner!: HTMLDivElement;
   private options!: SmartBannerOptions;
-  private useAppleNativeBanner: boolean = false;
-  private appleAppId: string = '';
   public isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
   public os: Platform = getMobileOS();
   public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i);
@@ -113,10 +111,7 @@ export class SmartBanner {
       shadow: true, // If true applies soft shadow, true | false
       useSession: true,
       zindex: 999999,
-      sessionExpire: 1440,
-      useAppleNativeBanner: false,
-      appleAppId: '',
-      appleAppArgument: ''
+      sessionExpire: 1440
     };
 
     options = Object.assign({}, defaultOptions, options);
@@ -355,8 +350,6 @@ export class SmartBanner {
     this.banner = banner;
     this.useSession = options.useSession;
     this.options = options;
-    this.useAppleNativeBanner = options.useAppleNativeBanner ?? false;
-    this.appleAppId = options.appleAppId ?? '';
   }
   // (1) inserts css in page
   addStyle(css: string) {
@@ -374,9 +367,6 @@ export class SmartBanner {
     const display = this.display;
     const banner = this.banner;
     const delay = this.delay;
-    const options = this.options;
-    const hasAppleMetaTag = !!document.querySelector('meta[name="apple-itunes-app"]');
-    const shouldUseAppleNativeBanner = this.isIosSafari && (hasAppleMetaTag || options.useAppleNativeBanner === true);
 
     this.unmount();
 
@@ -384,6 +374,9 @@ export class SmartBanner {
       this.unmount();
       return;
     }
+
+    const hasAppleMetaTag = !!document.querySelector('meta[name="apple-itunes-app"]');
+    const shouldUseAppleNativeBanner = this.isIosSafari && hasAppleMetaTag;
 
     if (shouldUseAppleNativeBanner) {
       if (hasAppleMetaTag) {

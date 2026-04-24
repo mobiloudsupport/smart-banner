@@ -31,10 +31,7 @@ type SmartBannerOptions = {
     useSession: boolean,
     zindex: number,
     sessionExpire: number,
-    useSession?: boolean,
-    useAppleNativeBanner?: boolean,
-    appleAppId?: string,
-    appleAppArgument?: string
+    useSession?: boolean
   };
   
 type Platform = "windows" | "android" | "ios" | "unknown" | "desktop";
