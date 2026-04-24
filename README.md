@@ -37,7 +37,7 @@ ML Smart Banner features:
     - Entering animation
     - Display options: On load or when user scrolls up/down
     - Android and iOS links
-- Native Apple Smart App Banner support on iOS Safari when the page already includes the required `apple-itunes-app` meta tag
+- Native Apple Smart App Banner support on iOS Safari when the page already includes the required `apple-itunes-app` meta tag. If the tag exists, the custom banner is suppressed automatically
 -  Button Link applies automatically depending on user agent: If Android, it uses the provided android link if iOS, uses the provided ios link.
 -  deviceData method available: its a function that can be called to get the current browser OS, useful for triggering external functions'. It returns a string containing "android" | "ios" | "windows"
 - Fallback App Icon option --> If the provided icon link is invalid / or image can not be displayed, an icon is generated using the App Name Param and Button colors
@@ -87,9 +87,6 @@ const options = {
     shadow: true, // (boolean) If true applies soft shadow, true | false
     useSession: true, // (boolean) If true, after closed, Banner is not shown upon page reload. Default: true
     zindex: 999999, // (number) Sets the z-index of the element
-    useAppleNativeBanner: false, // (boolean) If true, iOS Safari defers to Apple's native banner when the apple-itunes-app meta tag is present
-    appleAppId: '', // (string) Optional App Store ID reference for your own config/docs. The library does not inject the meta tag for you.
-    appleAppArgument: '' // (string) Optional deep-link URL matching Apple's app-argument value in the meta tag
 }
 
 const smartBanner = new SmartBanner(options);
@@ -125,7 +122,7 @@ function addSmartBanner() {
 
 ### Apple native banner on iOS Safari, custom banner elsewhere
 
-If your page already includes Apple's required meta tag in the server-rendered `<head>`, the library can automatically suppress the custom banner on iOS Safari while still showing the custom banner on Android and non-Safari iOS browsers.
+If your page already includes Apple's required meta tag in the server-rendered `<head>`, the library automatically suppresses the custom banner on iOS Safari while still showing the custom banner on Android and non-Safari iOS browsers.
 
 ```html
 <meta name="apple-itunes-app" content="app-id=123456789, app-argument=https://example.com/open">
@@ -133,9 +130,6 @@ If your page already includes Apple's required meta tag in the server-rendered `
 
 ```javascript
 const options = {
-  useAppleNativeBanner: true,
-  appleAppId: '123456789',
-  appleAppArgument: 'https://example.com/open',
   linkIos: 'https://apps.apple.com/app/id123456789',
   linkAndroid: 'https://play.google.com/store/apps/details?id=com.example.app'
 }
@@ -150,6 +144,9 @@ Behavior:
 - iOS Safari + meta tag missing: custom banner is shown as a fallback
 - Android: custom banner is shown as usual
 - iOS Chrome/Firefox/other: custom banner is shown as usual
+
+Important note:
+- Apple documents Smart App Banners as a meta tag in the page head. For the most reliable results, render the meta tag in the original HTML when possible.
 
 ### Using deviceData method to filter devices
 

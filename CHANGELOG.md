@@ -1,8 +1,7 @@
 # Changelog
 
 ## 1.4.0
-- FEATURE: Added Apple native Smart App Banner support for iOS Safari when `useAppleNativeBanner` is enabled and the `apple-itunes-app` meta tag is present
-- FEATURE: Added `useAppleNativeBanner`, `appleAppId` and `appleAppArgument` params
+- FEATURE: Added Apple native Smart App Banner support for iOS Safari when the `apple-itunes-app` meta tag is present
 - FEATURE: Added `deviceData.browser` and `deviceData.isIosSafari`
 - FEATURE: Added `APPLE_NATIVE_BANNER_ACTIVE` event
 - CHANGE: Banner logic now suppresses the custom banner on iOS Safari when the Apple native banner meta tag is detected, avoiding duplicate banners
