@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mobiloudsupport/smart-banner"
+    "url": "git+https://github.com/mobiloudsupport/smart-banner.git"
   },
   "keywords": [
     "smartbanner",
