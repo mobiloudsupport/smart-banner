@@ -6,7 +6,8 @@ const bannerEvents = {
   BANNER_CLOSED: new CustomEvent("BANNER_CLOSED", {bubbles: true}),
   BANNER_MOUNTED: new CustomEvent("BANNER_MOUNTED"),
   BANNER_UNMOUNTED: new CustomEvent("BANNER_UNMOUNTED"),
-  BANNER_LINK_CLICKED: new CustomEvent("BANNER_LINK_CLICKED",  {bubbles: true})
+  BANNER_LINK_CLICKED: new CustomEvent("BANNER_LINK_CLICKED",  {bubbles: true}),
+  APPLE_NATIVE_BANNER_ACTIVE: new CustomEvent("APPLE_NATIVE_BANNER_ACTIVE")
 }
 export function getMobileOS(): Platform {
 	var userAgent =
@@ -34,15 +35,50 @@ export function getMobileOS(): Platform {
 export const os: Platform = getMobileOS();
 export const isMobile: boolean | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i) ? true : false;	
 export const isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
+export function getBrowser(): BrowserName {
+  const userAgent = navigator.userAgent;
+
+  if (/CriOS|Chrome/i.test(userAgent) && !/EdgiOS/i.test(userAgent)) {
+    return "chrome";
+  }
+
+  if (/FxiOS|Firefox/i.test(userAgent)) {
+    return "firefox";
+  }
+
+  if (
+    /Safari/i.test(userAgent) &&
+    !/CriOS|FxiOS|OPiOS|EdgiOS|DuckDuckGo|Brave|Chrome|Firefox/i.test(userAgent)
+  ) {
+    return "safari";
+  }
+
+  return "other";
+}
+
+export function getIsIosSafari(): boolean {
+  const userAgent = navigator.userAgent;
+  const isIos = /iPhone|iPad|iPod/i.test(userAgent);
+  const isSafari = /Safari/i.test(userAgent);
+  const isNotOtherBrowser = !/CriOS|FxiOS|OPiOS|EdgiOS|DuckDuckGo|Brave|Chrome|Firefox/i.test(userAgent);
+
+  return isIos && isSafari && isNotOtherBrowser;
+}
+
+export const browser: BrowserName = getBrowser();
+export const isIosSafari: boolean = getIsIosSafari();
 export class SmartBanner {
 
   private button!: HTMLButtonElement;
   private display: SmartBannerOptions['display'] = 'onLoad';
   private delay!: SmartBannerOptions['delay'];
   private banner!: HTMLDivElement;
+  private options!: SmartBannerOptions;
   public isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
   public os: Platform = getMobileOS();
   public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i);
+  public browser: BrowserName = getBrowser();
+  public isIosSafari: boolean = getIsIosSafari();
   useSession!: boolean;
   
   constructor(options: SmartBannerOptions) {
@@ -313,6 +349,7 @@ export class SmartBanner {
     this.delay = options.delay;
     this.banner = banner;
     this.useSession = options.useSession;
+    this.options = options;
   }
   // (1) inserts css in page
   addStyle(css: string) {
@@ -326,16 +363,33 @@ export class SmartBanner {
   }
 
   init() {
-    
-    
     const widgetClosed = window.localStorage.getItem('widgetClosed');
     const display = this.display;
     const banner = this.banner;
     const delay = this.delay;
-    const useSession = this.useSession
+
     this.unmount();
+
+    if (!IS_BROWSER) {
+      this.unmount();
+      return;
+    }
+
+    const hasAppleMetaTag = !!document.querySelector('meta[name="apple-itunes-app"]');
+    const shouldUseAppleNativeBanner = this.isIosSafari && hasAppleMetaTag;
+
+    if (shouldUseAppleNativeBanner) {
+      if (hasAppleMetaTag) {
+        banner.remove();
+        document.querySelector('link[ml-smart-banner-style]')?.remove();
+        window.dispatchEvent(bannerEvents.APPLE_NATIVE_BANNER_ACTIVE);
+        return;
+      }
+    }
+
     window.dispatchEvent(bannerEvents.BANNER_MOUNTED);
     banner.setAttribute('initiated', "");
+
     if (widgetClosed) {
       console.log('smartBanner hidden by session');
       const bannerExpired = new Date() > new Date(widgetClosed);
@@ -346,11 +400,7 @@ export class SmartBanner {
           return; // If not expired, exit early and don't show the widget
       }
     }
-    if (!IS_BROWSER) {
-      this.unmount();
-      return;
-    }
-    
+
     const displayMode = () => {
       let lastScrollTop = 0;
       switch (display) {
@@ -414,6 +464,8 @@ export class SmartBanner {
 export const deviceData = {
 	os: os,
 	isMobile: isMobile ,
-	isCanvas: isCanvas
+	isCanvas: isCanvas,
+  browser: browser,
+  isIosSafari: isIosSafari
 }
 	

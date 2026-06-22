@@ -3,14 +3,14 @@
   "description": "MobiLoud Smart App Banner",
   "type": "module",
   "private": false,
-  "version": "1.3.0",
+  "version": "1.4.0",
   "license": "GPL-3.0-or-later",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mobiloudsupport/smart-banner"
+    "url": "git+https://github.com/mobiloudsupport/smart-banner.git"
   },
   "keywords": [
     "smartbanner",

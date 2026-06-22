@@ -5,6 +5,8 @@ interface Window {
       opera: any
     }
 
+type BrowserName = "safari" | "chrome" | "firefox" | "other";
+
 type SmartBannerOptions = {
     appName: string,
     fontFamily: string,
@@ -28,7 +30,8 @@ type SmartBannerOptions = {
     shadow?: boolean, // If true applies soft shadow
     useSession: boolean,
     zindex: number,
-    sessionExpire: number
+    sessionExpire: number,
+    useSession?: boolean
   };
   
 type Platform = "windows" | "android" | "ios" | "unknown" | "desktop";
