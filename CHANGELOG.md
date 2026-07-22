@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+- BREAKING: Removed the `position` option. The banner now always renders at the top; `position: 'bottom'` configs will be ignored and render at the top instead
+- BREAKING: When a top banner is visible, the page body is now shifted down (via CSS `transform`/`padding-bottom`) by the banner's rendered height, so it no longer overlaps page content. This also drags along any `position: fixed`/`sticky` elements on the page (e.g. a fixed navbar), which previously stayed pinned in place
+- CHANGE: Banner element is now appended as a sibling of `<body>` (child of `<html>`) instead of inside `<body>`, so it isn't affected by the body transform above
+- CHANGE: Styles are now injected via an inline `<style>` tag instead of a `<link rel="stylesheet" href="data:...">`, fixing a timing bug where banner height could be measured before its own layout styles had applied
+
 ## 1.4.0
 - FEATURE: Added Apple native Smart App Banner support for iOS Safari when the `apple-itunes-app` meta tag is present
 - FEATURE: Added `deviceData.browser` and `deviceData.isIosSafari`

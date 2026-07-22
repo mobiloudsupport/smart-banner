@@ -27,7 +27,6 @@ Here's what [Apple's own help pages](https://developer.apple.com/library/archiv
 
 ML Smart Banner features:
 - Configuration options:
-    - Banner position
     - Banner delay
     - Texts fonts
     - Texts color
@@ -79,7 +78,6 @@ const options = {
     bannerColor: '#fff', // (string) Banner BG color
     linkIos: 'https://itunes.apple.com/', // (string) Link for iOS 
     linkAndroid: 'https://play.google.com/', // (string) Link for Android 
-    position: 'bottom', // (string) Position of the banner, default 'top'. 'top' | 'bottom'
     animation: 'fadeIn', // (string) Banner animation, default 'fadeIn'. 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
     display: 'onLoad', // (string) Display options, default 'onLoad'. 'onLoad' | 'onScrollDown' | 'onScrollUp'
     radius: '0', // (string) Banner radius with units
