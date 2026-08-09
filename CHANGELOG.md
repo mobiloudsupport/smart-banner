@@ -1,4 +1,7 @@
 # Changelog
+## 2.0.2
+- FEAT: Exposed smartbanner CSS var  `--ml-smart-banner-height` to dynamically add styles on the site.
+
 
 ## 2.0.1
 - FIX: Body is now pushed down via `margin-top` instead of `transform`/`padding-bottom`. The previous `transform` approach made body the containing block for all `position: fixed`/`sticky` descendants site-wide, which could conflict with a site's own fixed-header scroll logic (e.g. a header that toggles classes based on scroll position). This reverts the 2.0.0 behavior of dragging fixed/sticky elements down with the banner — they now stay pinned to the viewport as normal
