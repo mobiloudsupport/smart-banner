@@ -146,6 +146,16 @@ Behavior:
 Important note:
 - Apple documents Smart App Banners as a meta tag in the page head. For the most reliable results, render the meta tag in the original HTML when possible.
 
+### Stacking a page's own fixed/sticky header below the banner
+
+While visible, the banner exposes its height as `--ml-smart-banner-height` on `<html>` (`0px` when hidden). Any element on the page can use it to offset itself below the banner, e.g. added into a header's existing stacking calc:
+
+```css
+.site-header {
+  top: calc(var(--announcement-bar-height, 0px) + var(--ml-smart-banner-height, 0px));
+}
+```
+
 ### Using deviceData method to filter devices
 
 ```javascript
