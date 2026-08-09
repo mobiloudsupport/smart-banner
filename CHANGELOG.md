@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+- FIX: Body is now pushed down via `margin-top` instead of `transform`/`padding-bottom`. The previous `transform` approach made body the containing block for all `position: fixed`/`sticky` descendants site-wide, which could conflict with a site's own fixed-header scroll logic (e.g. a header that toggles classes based on scroll position). This reverts the 2.0.0 behavior of dragging fixed/sticky elements down with the banner — they now stay pinned to the viewport as normal
+- FIX: `.ml-smartBanner__title` (`<h4>`) now resets `margin: 0`, removing extra height the browser's default heading margin was adding to the banner
+
 ## 2.0.0
 - BREAKING: Removed the `position` option. The banner now always renders at the top; `position: 'bottom'` configs will be ignored and render at the top instead
 - BREAKING: When a top banner is visible, the page body is now shifted down (via CSS `transform`/`padding-bottom`) by the banner's rendered height, so it no longer overlaps page content. This also drags along any `position: fixed`/`sticky` elements on the page (e.g. a fixed navbar), which previously stayed pinned in place
