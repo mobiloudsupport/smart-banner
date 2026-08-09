@@ -1,5 +1,5 @@
-var v = Object.defineProperty;
-var N = (t, e, n) => e in t ? v(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
+var x = Object.defineProperty;
+var N = (t, e, n) => e in t ? x(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
 var r = (t, e, n) => (N(t, typeof e != "symbol" ? e + "" : e, n), n);
 const b = typeof window < "u", u = {
   BANNER_CLOSED: new CustomEvent("BANNER_CLOSED", { bubbles: !0 }),
@@ -121,7 +121,8 @@ class k {
     }
 
     .ml-smartBanner__title {
-      font-weight: bold; 
+      margin: 0;
+      font-weight: bold;
       color: ${e.headingColor};
       font-size: 14px
     }
@@ -237,21 +238,20 @@ class k {
         c.dispatchEvent(u.BANNER_LINK_CLICKED);
       }, m.addEventListener("click", () => {
         if (m.dispatchEvent(u.BANNER_CLOSED), n.unmount(), a.useSession) {
-          const S = (/* @__PURE__ */ new Date()).getTime(), x = new Date(S + a.sessionExpire * 60 * 1e3);
-          window.localStorage.setItem("widgetClosed", x.toString());
+          const S = (/* @__PURE__ */ new Date()).getTime(), v = new Date(S + a.sessionExpire * 60 * 1e3);
+          window.localStorage.setItem("widgetClosed", v.toString());
         }
       }), s.appendChild(m), s.appendChild(o), s.appendChild(d), s.appendChild(c), l.appendChild(s), document.documentElement.appendChild(l), l;
     }
     let g = w(e);
     this.addStyle(p), this.display = e.display, this.delay = e.delay, this.banner = g, this.useSession = e.useSession, this.options = e;
   }
-  // measures the rendered banner height and pushes body (and its fixed/sticky descendants) down to clear it
+  // measures the rendered banner height and pushes body's content down to clear it
   updateBannerHeightStyle() {
     const e = this.banner.getBoundingClientRect().height;
     (!this.heightStyleElement || !this.heightStyleElement.isConnected) && (this.heightStyleElement = document.createElement("style"), this.heightStyleElement.setAttribute("ml-smart-banner-height-style", ""), document.head.appendChild(this.heightStyleElement)), this.heightStyleElement.textContent = `
       html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) body {
-        transform: translateY(${e}px);
-        padding-bottom: ${e}px;
+        margin-top: ${e}px;
       }
     `, this.resizeListenerAttached || (this.resizeListenerAttached = !0, window.addEventListener("resize", () => {
       this.banner.classList.contains("ml-smartBanner-toggle--visible") && this.updateBannerHeightStyle();
