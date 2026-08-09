@@ -1,5 +1,5 @@
-var x = Object.defineProperty;
-var N = (t, e, n) => e in t ? x(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
+var v = Object.defineProperty;
+var N = (t, e, n) => e in t ? v(t, e, { enumerable: !0, configurable: !0, writable: !0, value: n }) : t[e] = n;
 var r = (t, e, n) => (N(t, typeof e != "symbol" ? e + "" : e, n), n);
 const b = typeof window < "u", u = {
   BANNER_CLOSED: new CustomEvent("BANNER_CLOSED", { bubbles: !0 }),
@@ -231,17 +231,17 @@ class k {
       f.className = "ml-smartBanner__title", f.innerHTML = a.textHeading, d.appendChild(f);
       const E = document.createElement("p");
       E.className = "ml-smartBanner__description", E.innerHTML = a.textDescription, d.appendChild(E);
-      const c = document.createElement("a");
-      c.id = "ml-smartBanner__button", c.className = "ml-smartBanner__button", c.target = "_blank", c.href = n.os === "android" ? a.linkAndroid : a.linkIos, c.textContent = a.buttonText;
-      const m = document.createElement("span");
-      return m.id = "ml-smartBanner__closebutton", m.className = "ml-smartBanner__closebutton", m.textContent = "×", c.onclick = function() {
-        c.dispatchEvent(u.BANNER_LINK_CLICKED);
-      }, m.addEventListener("click", () => {
-        if (m.dispatchEvent(u.BANNER_CLOSED), n.unmount(), a.useSession) {
-          const S = (/* @__PURE__ */ new Date()).getTime(), v = new Date(S + a.sessionExpire * 60 * 1e3);
-          window.localStorage.setItem("widgetClosed", v.toString());
+      const m = document.createElement("a");
+      m.id = "ml-smartBanner__button", m.className = "ml-smartBanner__button", m.target = "_blank", m.href = n.os === "android" ? a.linkAndroid : a.linkIos, m.textContent = a.buttonText;
+      const c = document.createElement("span");
+      return c.id = "ml-smartBanner__closebutton", c.className = "ml-smartBanner__closebutton", c.textContent = "×", m.onclick = function() {
+        m.dispatchEvent(u.BANNER_LINK_CLICKED);
+      }, c.addEventListener("click", () => {
+        if (c.dispatchEvent(u.BANNER_CLOSED), n.unmount(), a.useSession) {
+          const S = (/* @__PURE__ */ new Date()).getTime(), x = new Date(S + a.sessionExpire * 60 * 1e3);
+          window.localStorage.setItem("widgetClosed", x.toString());
         }
-      }), s.appendChild(m), s.appendChild(o), s.appendChild(d), s.appendChild(c), l.appendChild(s), document.documentElement.appendChild(l), l;
+      }), s.appendChild(c), s.appendChild(o), s.appendChild(d), s.appendChild(m), l.appendChild(s), document.documentElement.appendChild(l), l;
     }
     let g = w(e);
     this.addStyle(p), this.display = e.display, this.delay = e.delay, this.banner = g, this.useSession = e.useSession, this.options = e;
@@ -250,6 +250,12 @@ class k {
   updateBannerHeightStyle() {
     const e = this.banner.getBoundingClientRect().height;
     (!this.heightStyleElement || !this.heightStyleElement.isConnected) && (this.heightStyleElement = document.createElement("style"), this.heightStyleElement.setAttribute("ml-smart-banner-height-style", ""), document.head.appendChild(this.heightStyleElement)), this.heightStyleElement.textContent = `
+      :root {
+        --ml-smart-banner-height: 0px;
+      }
+      html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) {
+        --ml-smart-banner-height: ${e}px;
+      }
       html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) body {
         margin-top: ${e}px;
       }
