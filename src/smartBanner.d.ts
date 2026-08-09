@@ -22,7 +22,6 @@ type SmartBannerOptions = {
     bannerColor?: string,
     linkIos: string,
     linkAndroid: string,
-    position?: 'top' | 'bottom',
     animation?: 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
     display?: 'onLoad' | 'onScrollDown' | 'onScrollUp',
     radius?: string | null, // Any css unit, 50% gives a rounded btn if same height/width

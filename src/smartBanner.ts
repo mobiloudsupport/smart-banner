@@ -74,6 +74,8 @@ export class SmartBanner {
   private delay!: SmartBannerOptions['delay'];
   private banner!: HTMLDivElement;
   private options!: SmartBannerOptions;
+  private heightStyleElement!: HTMLStyleElement;
+  private resizeListenerAttached = false;
   public isCanvas = navigator.userAgent.toLowerCase().includes("canvas");
   public os: Platform = getMobileOS();
   public isMobile: RegExpMatchArray | null = navigator.userAgent.toLowerCase().match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i);
@@ -102,8 +104,7 @@ export class SmartBanner {
       textDescription: 'Try it now, download today', // Description text
       bannerColor: '#fff', // Banner BG color
       linkIos: 'https://itunes.apple.com/', // Link for iOS 
-      linkAndroid: 'https://play.google.com/', // Link for Android 
-      position: 'top', // Position of the banner, default 'top'. 'top' | 'bottom'
+      linkAndroid: 'https://play.google.com/', // Link for Android
       animation: 'fadeIn', // Banner animation, default 'fadeIn'. 'fadeIn' | 'scaleUp' | 'slideBottom' | 'slideTop' | 'slideLeft' | 'slideRight' | null,
       display: 'onLoad', // Display options, default 'onLoad'. 'onLoad' | 'onScrollDown' | 'onScrollUp'
       radius: '0', // Banner radius with units
@@ -121,7 +122,7 @@ export class SmartBanner {
     .ml-smartBanner {
       display:none;
       position: fixed;
-      ${options.position === 'bottom' ? 'bottom: 0' : 'top: 0'};
+      top: 0;
       left: 0;
       width: 100%;
       z-index: ${options.zindex};
@@ -143,8 +144,9 @@ export class SmartBanner {
     .ml-smartBanner__wrapper {
       display: flex;
       align-items: center;
-      padding: 1.8em 1.5em;
-      gap: 15px
+      padding: 0.5em 1em;
+      gap: 15px;
+      justify-content: center !important
     }
     
     .ml-smartBanner__description {
@@ -153,26 +155,25 @@ export class SmartBanner {
     }
 
     .ml-smartBanner__title {
-      font-weight: bold; margin: 0 0 5px 0;
+      margin: 0;
+      font-weight: bold;
       color: ${options.headingColor};
       font-size: 14px
     }
   
     .ml-smartBanner__button {
       background-color: ${options.buttonColor};
-      padding: 0.6em 0.8em;
+      padding: 0.4em 0.8em;
       border-radius: 5px;
       color: ${options.buttonTextColor};
       font-size: 14px;
       margin-left: auto;
-      text-decoration: none
+      text-decoration: none;
+      border-radius: 100px
     }
     
     .ml-smartBanner__closebutton {
-      position: absolute;
-      top: 0;
-      right: 5px;
-      font-size: 30px;
+      font-size: 25px;
       font-weight: revert;
       cursor: pointer;
       line-height: 30px;
@@ -327,16 +328,17 @@ export class SmartBanner {
 
       });
       // Append elements to the wrapper
+      wrapper.appendChild(closeButton);
       wrapper.appendChild(icon);
       wrapper.appendChild(content);
-      wrapper.appendChild(downloadButton);
-      wrapper.appendChild(closeButton);
+      wrapper.appendChild(downloadButton);      
 
       // Append the wrapper to the main container
       appBanner.appendChild(wrapper);
 
-      // Append the main container to the body of the document
-      document.body.appendChild(appBanner);
+      // Append as a sibling of <body>, not inside it, so the margin-top applied to
+      // body (to push its content down) doesn't also push the banner itself.
+      document.documentElement.appendChild(appBanner);
 
       return appBanner
     }
@@ -351,15 +353,42 @@ export class SmartBanner {
     this.useSession = options.useSession;
     this.options = options;
   }
+  // measures the rendered banner height and pushes body's content down to clear it
+  private updateBannerHeightStyle() {
+    const height = this.banner.getBoundingClientRect().height;
+
+    if (!this.heightStyleElement || !this.heightStyleElement.isConnected) {
+      this.heightStyleElement = document.createElement('style');
+      this.heightStyleElement.setAttribute('ml-smart-banner-height-style', '');
+      document.head.appendChild(this.heightStyleElement);
+    }
+
+    // margin-top pushes body content down in normal layout (unlike transform, it doesn't
+    // make body a containing block for position:fixed/sticky descendants, so those keep
+    // behaving relative to the viewport and page scroll math is unaffected).
+    this.heightStyleElement.textContent = `
+      html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) body {
+        margin-top: ${height}px;
+      }
+    `;
+
+    if (!this.resizeListenerAttached) {
+      this.resizeListenerAttached = true;
+      window.addEventListener('resize', () => {
+        if (this.banner.classList.contains('ml-smartBanner-toggle--visible')) {
+          this.updateBannerHeightStyle();
+        }
+      });
+    }
+  }
+
   // (1) inserts css in page
   addStyle(css: string) {
-    const linkElement = document.createElement('link');
+    const styleElement = document.createElement('style');
 
-    linkElement.setAttribute('rel', 'stylesheet');
-    linkElement.setAttribute('type', 'text/css');
-    linkElement.setAttribute('href', 'data:text/css;charset=UTF-8,' + encodeURIComponent(css));
-    linkElement.setAttribute('ml-smart-banner-style', "");
-    document.head.append(linkElement);
+    styleElement.setAttribute('ml-smart-banner-style', "");
+    styleElement.textContent = css;
+    document.head.append(styleElement);
   }
 
   init() {
@@ -381,7 +410,7 @@ export class SmartBanner {
     if (shouldUseAppleNativeBanner) {
       if (hasAppleMetaTag) {
         banner.remove();
-        document.querySelector('link[ml-smart-banner-style]')?.remove();
+        document.querySelector('style[ml-smart-banner-style]')?.remove();
         window.dispatchEvent(bannerEvents.APPLE_NATIVE_BANNER_ACTIVE);
         return;
       }
@@ -406,10 +435,11 @@ export class SmartBanner {
       switch (display) {
         case 'onLoad':
           banner.classList.add('ml-smartBanner-toggle--visible');
+          this.updateBannerHeightStyle();
           break;
         case 'onScrollDown':
 
-          window.addEventListener('scroll', function () {
+          window.addEventListener('scroll', () => {
             let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
             if (scrollTop < lastScrollTop) {
@@ -418,6 +448,7 @@ export class SmartBanner {
             } else {
               // Scrolling up, show the element
               banner.classList.add('ml-smartBanner-toggle--visible');
+              this.updateBannerHeightStyle();
             }
 
             lastScrollTop = scrollTop;
@@ -425,7 +456,7 @@ export class SmartBanner {
           break;
         case 'onScrollUp':
 
-          window.addEventListener('scroll', function () {
+          window.addEventListener('scroll', () => {
             let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
             if (scrollTop > lastScrollTop) {
@@ -434,6 +465,7 @@ export class SmartBanner {
             } else {
               // Scrolling up, show the element
               banner.classList.add('ml-smartBanner-toggle--visible');
+              this.updateBannerHeightStyle();
             }
 
             lastScrollTop = scrollTop;
@@ -441,6 +473,7 @@ export class SmartBanner {
           break;
         default:
           this.button.classList.add('ml-smartBanner-toggle--visible')
+          this.updateBannerHeightStyle();
           break;
       }
     }
@@ -450,12 +483,13 @@ export class SmartBanner {
   }
   unmount() {
     let smartBanner = document.querySelector('.ml-smartBanner[initiated]');
-    let smartBannerStyles = document.querySelector('link[ml-smart-banner-style]')
+    let smartBannerStyles = document.querySelector('style[ml-smart-banner-style]')
 
     if(smartBanner){
       window.dispatchEvent(bannerEvents.BANNER_UNMOUNTED);
       smartBanner?.remove()
       smartBannerStyles?.remove()
+      this.heightStyleElement?.remove()
     }
   }
 }
