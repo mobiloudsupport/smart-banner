@@ -155,7 +155,8 @@ export class SmartBanner {
     }
 
     .ml-smartBanner__title {
-      font-weight: bold; 
+      margin: 0;
+      font-weight: bold;
       color: ${options.headingColor};
       font-size: 14px
     }
@@ -335,8 +336,8 @@ export class SmartBanner {
       // Append the wrapper to the main container
       appBanner.appendChild(wrapper);
 
-      // Append as a sibling of <body>, not inside it, so the transform applied to
-      // body (to drag its fixed/sticky descendants down) doesn't also drag the banner itself.
+      // Append as a sibling of <body>, not inside it, so the margin-top applied to
+      // body (to push its content down) doesn't also push the banner itself.
       document.documentElement.appendChild(appBanner);
 
       return appBanner
@@ -352,7 +353,7 @@ export class SmartBanner {
     this.useSession = options.useSession;
     this.options = options;
   }
-  // measures the rendered banner height and pushes body (and its fixed/sticky descendants) down to clear it
+  // measures the rendered banner height and pushes body's content down to clear it
   private updateBannerHeightStyle() {
     const height = this.banner.getBoundingClientRect().height;
 
@@ -362,13 +363,12 @@ export class SmartBanner {
       document.head.appendChild(this.heightStyleElement);
     }
 
-    // transform makes body the containing block for its position:fixed/sticky descendants,
-    // so they move down together with the rest of the page instead of staying pinned to the viewport.
-    // padding-bottom compensates the scroll height that the transform doesn't add on its own.
+    // margin-top pushes body content down in normal layout (unlike transform, it doesn't
+    // make body a containing block for position:fixed/sticky descendants, so those keep
+    // behaving relative to the viewport and page scroll math is unaffected).
     this.heightStyleElement.textContent = `
       html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) body {
-        transform: translateY(${height}px);
-        padding-bottom: ${height}px;
+        margin-top: ${height}px;
       }
     `;
 
