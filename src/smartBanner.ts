@@ -366,7 +366,16 @@ export class SmartBanner {
     // margin-top pushes body content down in normal layout (unlike transform, it doesn't
     // make body a containing block for position:fixed/sticky descendants, so those keep
     // behaving relative to the viewport and page scroll math is unaffected).
+    // --ml-smart-banner-height exposes the same value so a page's own fixed/sticky elements
+    // (e.g. a sticky header stacked under an announcement bar) can add it into their own
+    // offset calculation to clear the banner, without this library touching their positioning.
     this.heightStyleElement.textContent = `
+      :root {
+        --ml-smart-banner-height: 0px;
+      }
+      html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) {
+        --ml-smart-banner-height: ${height}px;
+      }
       html:has(.ml-smartBanner.ml-smartBanner-toggle--visible) body {
         margin-top: ${height}px;
       }
